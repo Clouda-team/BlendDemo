@@ -33,11 +33,14 @@
 
         Blend.device.battery.get({
             onsuccess:function(data){
-                console.log(JSON.stringify(data));
+                
+                $("#apiresult",dom).val(JSON.stringify(data));
+                
                 var val = data.level;
                 if(val >=0 && val <= 100){ showLevel(val);}
+                
             },onfail:function(errno){
-                console.log(errno);
+                $("#apiresult",dom).val(JSON.stringify(errno));
             }
         });
 
