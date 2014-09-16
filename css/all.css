@@ -1,0 +1,141 @@
+.page-content{
+  background-color:#f2f2f2;
+}
+.home {
+  margin-top: -2px;
+}
+.home_grid {
+  float: left;
+  width: 33.332%;
+  background-color: #6f7681;
+}
+.home_item {
+  background-color: #f2f2f2;
+  box-shadow: -1px -1px 0 #e6e6e6 inset, 1px 1px 0 #ffffff inset;
+  -webkit-transition: -webkit-transform 0.13s ease-out;
+  -moz-transition: -moz-transform 0.13s ease-out;
+  -o-transition: -o-transform 0.13s ease-out;
+  transition: transform 0.13s ease-out;
+}
+.home_link {
+  display: block;
+  vertical-align: bottom;
+  color: #333333;
+  text-align: center;
+  padding-bottom: 26.666666666666668px;
+  text-decoration: none;
+  -webkit-user-select: none;
+}
+.home_link:hover {
+  text-decoration: none;
+}
+.home_link-desc {
+  margin-top: -1em;
+  display: block;
+  line-height: 1em;
+  font-size: 12px;
+}
+.home_icon {
+  min-height: 80px;
+  background-size: 42.666666666666664px 42.666666666666664px;
+}
+.home_icon_compass {
+  background: url(../img/home/compass.jpg) no-repeat center;
+}
+.home_icon_camera {
+  background: url(../img/home/camera.jpg) no-repeat center;
+}
+.home_icon_contact {
+  background: url(../img/home/contact.jpg) no-repeat center;
+}
+.home_icon_lbs {
+  background: url(../img/home/lbs.jpg) no-repeat center;
+}
+.home_icon_media {
+  background: url(../img/home/media.jpg) no-repeat center;
+}
+.home_icon_orientation {
+  background: url(../img/home/orientation.jpg) no-repeat center;
+}
+.home_icon_power {
+  background: url(../img/home/power.jpg) no-repeat center;
+}
+.home_icon_voice {
+  background: url(../img/home/voice.jpg) no-repeat center;
+}
+.home_icon_network {
+  background: url(../img/home/network.jpg) no-repeat center;
+}
+.home__press {
+  -webkit-transform: scale(0.95);
+  -ms-transform: scale(0.95);
+  transform: scale(0.95);
+}
+
+/*for battery*/
+body #bd{
+  border-top : none;
+}
+
+#line {
+  border-top: 1px solid #ebeaea;
+}
+#batterybox{
+  position: relative;
+  width: 242px;
+  height: 389px;
+  overflow: hidden;
+  top: 60px;
+  margin: 0 auto;
+}
+#level {
+  background-image: url("../img/battery/greendot.png");
+  position: absolute;
+  width: 100%;
+  z-index: 2;
+  height: 0px;
+  bottom:10px;
+  -webkit-transition: all .7s ease;
+}
+#level.reddot{
+  background-image: url("../img/battery/reddot.png");
+}
+#texture{
+  position: absolute;
+  z-index: 1;
+  background-image: url("../img/battery/texture.png");
+  background-position: center center;
+  width: 100%;
+  height: 100%; 
+}
+#battery {
+  position: absolute;
+  z-index: 3;
+  background-image: url("../img/battery/battery.png");
+  width: 100%;
+  height: 100%;
+}
+#qualitybox{
+  position: absolute;
+  overflow: hidden;
+  width: 100%;
+  text-align: center;
+  top: 460px;
+}
+#quality{
+  font-size: 2em;
+}
+
+#quality .low{
+  color: #D91D21
+}
+
+#quality #percent{
+  font-size: .5em;
+}
+
+#desc{
+  line-height: 1.6em;
+  color: #777;
+  font-size: .8em;
+}
