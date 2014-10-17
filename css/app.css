@@ -332,26 +332,24 @@ ul.list{
 /*指南针*/
 .box{
 	position: relative;
-	width: 200px;
-	height: 200px;
+	width: 260px;
+	height: 260px;
 	margin: 50px auto;
 }
 .pan{
 	position: absolute;
-	background-size: 200px 200px;
-	line-height: 200px;
-	width: 200px;
-	height: 200px;
+	background-size: 260px 260px;
+	width: 260px;
+	height: 260px;
 	background-image: url(../img/icon/pan.png);
 }
 
 .pointer{
 	position: absolute;
-	top:10px;
-	left: 83px;
-	background-size: 34px 180px;
-	line-height: 200px;
-	width: 34px;
-	height: 180px;
+	top:17px;
+	left: 113.5px;
+	background-size: 33px 226px;
+	width: 33px;
+	height: 226px;
 	background-image: url(../img/icon/pointer.png);
 }
