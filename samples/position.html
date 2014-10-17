@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>battery demo</title>
+    <script src="http://api.map.baidu.com/components?ak=9abc181363509f0afc01775df2349a7d&v=1.0"></script>
+</head>
+<body>
+<div class="pages">
+    <div class="page navbar-through">  
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="left sliding"><a href="#" class="back link"><i class="icon icon-back-blue"></i><span>后退</span></a></div>
+            <div class="center">定位</div>
+            <div class="right"></div>
+          </div>
+        </div>
+        <div class="page-content">
+            <div class="screen">
+                <lbs-map width="100%" style="height:500px" center="116.307852,40.057031">
+                    <lbs-poi name="百度大厦" location="116.307852,40.057031" addr="北京市海淀区上地十街10号" ></lbs-poi>
+                </lbs-map>
+                <div class="icon_down" role="button"></div>
+            </div>
+            <div class="screen none">
+                <div class="title clearfix">接口返回值</div>
+                <textarea class="full h120" name="" id="api">
+                    api get result here...
+                </textarea>
+                <div class="title clearfix">成功返回值</div>
+                <textarea class="half h120 fl br1" name="method">get</textarea>
+                <textarea class="half h120 fl" name="success">api get result here...</textarea>
+            </div>
+            <script type="text/javascript" src="http://api.map.baidu.com/components?ak=9abc181363509f0afc01775df2349a7d&v=1.0"></script>        
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="../js/app.js"></script>
+</html>

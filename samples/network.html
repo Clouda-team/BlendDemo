@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>battery demo</title>
+</head>
+<body>
+<div class="pages">
+    <div class="page navbar-through">  
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="left sliding"><a href="#" class="back link"><i class="icon icon-back-blue"></i><span>后退</span></a></div>
+            <div class="center">网络</div>
+            <div class="right"></div>
+          </div>
+        </div>
+        <div class="page-content">
+            <div class="screen">
+                <div>
+                    <a id="status" class="button button-sm">获取状态</a>
+                    <a id="startlisten" class="button button-sm">开始监听</a>
+                    <a id="endlisten" class="button button-sm">停止监听</a>
+                </div>
+                <div class="center mt60">
+                    <i class="icon_wifi"></i>
+                    <div id="networktype" class="center">
+                        当前网络类型:
+                    </div>
+                </div>
+            </div>
+            <div class="screen none">
+                <div class="title clearfix">接口返回值</div>
+                <textarea class="full h120" name="" id="api">
+                    api get result here...
+                </textarea>
+                <div class="title clearfix">成功返回值</div>
+                <textarea class="half h120 fl br1" name="method">get</textarea>
+                <textarea class="half h120 fl" name="success">api get result here...</textarea>
+            </div>         
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="../js/app.js"></script>
+</html>
