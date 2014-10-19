@@ -1194,6 +1194,7 @@ i.icon.icon-qing {
   color: #6d6d72;
 }
 .content-block-title {
+  clear:both;
   position: relative;
   overflow: hidden;
   margin: 0;
@@ -1203,7 +1204,8 @@ i.icon.icon-qing {
   text-transform: uppercase;
   line-height: 1;
   color: #6d6d72;
-  margin: 35px 15px -25px;
+  padding:10px;
+  /*margin: 35px 15px -25px;*/
 }
 .content-block-inner {
   background: #fff;

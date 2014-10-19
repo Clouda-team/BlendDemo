@@ -354,6 +354,44 @@
 
     });
 
+    blend.layerInit("Slider",function(dom){
+        var mylayer = blend.get("Slider");
+
+        $("a.back",dom).click(function(){
+            console.log("click.... back... out....")
+            mylayer.out();
+            return false;
+        });
+        var Slider = Blend.ui.Slider;
+        var images = [],slider;
+        $(".page-content img",dom).each(function(i, n) {
+            images.push({
+                url: $(this).attr("src")
+            });
+        }).click(function(){
+            if (!slider) {
+                slider = new Slider({
+                    "id": "test",
+                    "bgColor": "#cccccc",
+                    "images": images,
+                    hasIndicator: true,
+                    inactiveColor: "#888888",
+                    activeColor: "#ff0000",
+                    "tap": function(e) {
+                        history.back();
+                    },
+                    'slide': function(e) {
+                        console.log(e.data.index)
+                    }
+                });
+            } else {
+                // slider && slider.destroy();
+            }
+        });
+        
+
+
+    });
     
     blend.layerInit("0",function(){
 
