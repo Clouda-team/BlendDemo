@@ -10204,7 +10204,7 @@ define('src/web/blend',["require",'./../common/lib',"./configs","./events",'../.
 
             // Android
             if (android) {
-                $("html").addClass('android');
+                // $("html").addClass('android');
             }
             // iOS
             if (ipad || iphone || ipod) {
