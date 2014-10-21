@@ -14,25 +14,35 @@
 <div class="pages">
     
 <div class="page navbar-through">
-        
     <div class="navbar">
       <div class="navbar-inner">
         <div class="left sliding"><a href="#" class="back link"><i class="icon icon-back-blue"></i><span>后退</span></a></div>
-          <div class="center">摄像头</div>
+          <div class="center">摄像头相册</div>
         <div class="right"></div>
       </div>
     </div>
     <div class="page-content">
-        <!--<div id="batterybox">-->
-            <!--<div id="texture"></div>-->
-            <!--<div id="level"></div>-->
-            <!--<div id="battery"></div>-->
-        <!--</div>-->
-        <div class="result">
-            <textarea name="" id="apiresult">
+        <div class="screen">
+            <div class="center">
+                <a class="button button-xs" id="imageurl">获取照片URL</a>
+                <a class="button button-xs" id="imagebase64">获取照片base64数据</a>
+            </div>
+            <div class="center">
+                <img src="../img/icon/video.png" alt="" width="200" height="200" id="photo">
+            </div>
+            <div class="next" role="button">
+                <span class="icon_down"> </span>
+            </div> 
+        </div>
+        <div class="screen none">
+            <div class="title clearfix">接口返回值</div>
+            <textarea class="full h120" name="" id="api">
                 api get result here...
             </textarea>
-        </div>
+            <div class="title clearfix">成功返回值</div>
+            <textarea class="half h120 fl br1" name="method">get</textarea>
+            <textarea class="half h120 fl" name="success">api get result here...</textarea>
+        </div> 
     </div>
 </div>
 </div>
