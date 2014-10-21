@@ -40,7 +40,7 @@
 	}
 
 	Sample.prototype = {
-		battery:function(dom){
+battery:function(dom){
 	        var showLevel = function(val){
 	            val = parseInt(val);
 	            var level = $("#level",dom),value=$("#value",dom);
@@ -120,17 +120,31 @@
 			registerEvent(dom,blend.ui.get("media"));
 		},
 		camera:function(dom){
-            clouda.device.media.captureMedia({
-                mediaType : 0,//IMAGE
-                source : 0,//CAMERA
-                onfail : function(err){
-                        alert(JSON.stringify(err));
-                },
-                onsuccess : function(mediaFile){
-                        //返回读取到的图片文件的本地全信息
-                        alert(JSON.stringify(mediaFile));
-                } 
-            });
+			$("#imageurl",dom).click(function(){
+	            clouda.device.media.captureMedia({
+	                mediaType : 0,
+	                source : 0,
+	                onfail : function(err){
+	                    alert(JSON.stringify(err));
+	                },
+	                onsuccess : function(mediaFile){
+	                    alert(JSON.stringify(mediaFile));
+	                } 
+	            });
+			});
+			$("#imagebase64",dom).click(function(){
+	            clouda.device.media.captureMedia({
+	                mediaType : 0,
+	                source : 0,
+	                onfail : function(err){
+	                        alert(JSON.stringify(err));
+	                },
+	                onsuccess : function(mediaFile){
+	                        //返回读取到的图片文件的本地全信息
+	                        alert(JSON.stringify(mediaFile));
+	                } 
+	            });
+			});			
             registerEvent(dom,blend.ui.get("camera"));
 		},
 		geolocaiton:function(dom){
@@ -269,7 +283,48 @@
 			registerEvent(dom,blend.ui.get("contact"));
 		},
 		voice:function(dom){
+			var ak = "8MAxI5o7VjKSZOKeBzS4XtxO";
+			var sk = "Ge5GXVdGQpaxOmLzc8fOM8309ATCz9Ha";
+			var pid = "1536";
 
+			$("#voice",dom).click(function(){
+				Blend.mbaas.vtt.init(ak,sk,pid);
+				Blend.mbaas.vtt.showDialog({
+					onsuccess: function(data){
+						$("#api",dom).val(JSON.stringify(data));
+					},
+					onfail: function(data){
+						$("#api",dom).val(JSON.stringify(data));
+					},
+					speechMode: Blend.mbaas.VTT_SPEECHMODE.SEARCH,
+					uuid: 'abc-abc5151',
+					enablePower: true
+				})
+			});
+			$("#zh",dom).click(function(){
+				var word = $("#word").val()?$("#word").val():'请输入';
+				Blend.mbaas.tts.say(word,{
+					onsuccess: function(data){
+						$("#api",dom).val(JSON.stringify(data));
+					},
+					onfail: function(data){
+						$("#api",dom).val(JSON.stringify(data));
+					},
+					type: Blend.mbaas.tts.TYPE_DICT_ZH
+				});
+			});
+			$("#en",dom).click(function(){
+				var word = $("#word").val()?$("#word").val():'请输入'; 
+				Blend.mbaas.tts.say(word,{
+					onsuccess: function(data){
+						$("#api",dom).val(JSON.stringify(data));
+					},
+					onfail: function(data){
+						$("#api",dom).val(JSON.stringify(data));
+					},
+					type: Blend.mbaas.tts.TYPE_DICT_US
+				});
+			});
 			registerEvent(dom,blend.ui.get("voice"));
 		},
 		compass:function(dom){
@@ -286,6 +341,7 @@
 				Blend.device.compass.startListen({
 					onsuccess: function(data){
 						rotate(data.magneticHeading,dom);
+						$("#deg").text(data.magneticHeading);
 						$("#api",dom).val(JSON.stringify(data));
 					},
 					onfail: function(data){
@@ -300,6 +356,40 @@
 			registerEvent(dom,blend.ui.get("compass"));
 		},
 		recognition:function(dom){
+			var uid = "demo_user";
+			$("#register",dom).click(function(){
+				alert('registerEvent');
+				clouda.mbaas.facerecognition.reister(uid,{
+					onsuccess: function(data){
+						alert(1);
+						$("#api",dom).val(JSON.stringify(data));
+					},
+					onfail: function(data){
+						alert(2);
+						$("#api",dom).val(JSON.stringify(data));
+					}
+				})
+			});
+			$("#face",dom).click(uid,function(){
+				clouda.mbaas.facerecognition.verify(uid,{
+					onsuccess: function(data){
+						$("#api",dom).val(JSON.stringify(data));
+					},
+					onfail: function(data){
+						$("#api",dom).val(JSON.stringify(data));
+					}
+				})				
+			});
+			$("#blink",dom).click(uid,function(){
+				clouda.mbaas.facerecognition.checkBlink(uid,{
+					onsuccess: function(data){
+						$("#api",dom).val(JSON.stringify(data));
+					},
+					onfail: function(data){
+						$("#api",dom).val(JSON.stringify(data));
+					}
+				})
+			});
 			registerEvent(dom,blend.ui.get("recognition"));
 		},
 		accelerator:function(dom){
@@ -323,19 +413,126 @@
 			registerEvent(dom,blend.ui.get("accelerator"));
 		},
 		capture:function(dom){
+			$("#captureshare",dom).click(function(){
+				Blend.device.screen.shareScreen({
+					onsuccess: function(data){
+						$("#api",dom).val(JSON.stringify(data));
+					},
+					onfail: function(data){
+						$("#api",dom).val(JSON.stringify(data));
+					}
+				})
+			});
+			$("#capture",dom).click(function(){
+				Blend.device.screen.captureScreen({
+					onsuccess: function(data){
+						$("#api",dom).val(JSON.stringify(data));
+					},
+					onfail: function(data){
+						$("#api",dom).val(JSON.stringify(data));
+					}
+				})
+			});
+			$("#share",dom).click(function(){
+				var base64imageData = '';
+				Blend.device.screen.shareImage(base64imageData,{
+					onsuccess: function(data){
+						$("#api",dom).val(JSON.stringify(data));
+					},
+					onfail: function(data){
+						$("#api",dom).val(JSON.stringify(data));
+					}
+				});
+			});
 			registerEvent(dom,blend.ui.get("capture"));
 		},
 		account:function(dom){
+			$("#login",dom).click(function(){
+				Blend.mbaas.account.login({
+					onsuccess: function(data){
+						$("#api",dom).val(JSON.stringify(data));
+					},
+					onfail: function(data){
+						$("#api",dom).val(JSON.stringify(data));
+					},
+					redirect_uri: "",
+					mediaType: '',
+					scope: '',
+					authorize_url: ''
+				})
+			});
+			$("#sign",dom).click(function(){
+			});
+			$("#logout",dom).click(function(){
+
+			});
 			registerEvent(dom,blend.ui.get("account"));
 		},
 		pay:function(dom){
 			registerEvent(dom,blend.ui.get("pay"));
 		},
 		share:function(dom){
+			$('#share',dom).click(function(){
+				var content = $("#text").val();
+				Blend.mbaas.socialshare.callShare({
+					onsuccess: function(data){
+						$("#api",dom).val(JSON.stringify(data));
+					},
+					onfail: function(data){
+						$("#api",dom).val(JSON.stringify(data));
+					},
+					mediaType: 'all',
+					content: content,
+					linkUrl: 'http://clouda.com/blend/introduction/introduction',
+					imageUrl: 'http://www.baidu.com/img/bdlogo.png'
+				});	
+			})		
 			registerEvent(dom,blend.ui.get("share"));
 		},
-		push:function(dom){
-			registerEvent(dom,blend.ui.get("push"));
+		message:function(dom){
+			$("#unicast",dom).click(function(){
+				Blend.mbaas.push.registerUnicast({
+					onsuccess: function(data){
+						$("#api",dom).val(JSON.stringify(data));
+					},
+					onfail: function(data){
+						$("#api",dom).val(JSON.stringify(data));
+					}
+				});
+			});
+			$("#multicast",dom).click(function(){
+				Blend.mbaas.push.registerMulticast({
+					tag: 'blendDemo',
+					onsuccess: function(data){
+						$("#api",dom).val(JSON.stringify(data));
+					},
+					onfail: function(data){
+						$("#api",dom).val(JSON.stringify(data));						
+					}
+				});
+			});
+			$("#unregisterUnicast",dom).click(function(){
+				Blend.mbaas.push.unregisterUnicast({
+					onsuccess: function(data){
+						$("#api",dom).val(JSON.stringify(data));
+					},
+					onfail: function(){
+						$("#api",dom).val(JSON.stringify(data));
+					}
+				});
+			});
+			$("#unregisterMulticast",dom).click(function(){
+				Blend.mbaas.push.unregisterMulticast({
+					tag: 'blendDemo',
+					onsuccess: function(){
+
+					},
+					onfail: function(){
+						
+					}
+				});
+			});			
+			registerEvent(dom,blend.ui.get("message"));
 		},
 		layer:function(dom){
 			// newlayer
