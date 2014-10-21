@@ -5,15 +5,17 @@
     
     var layer = blend.Layer;
 
+    $(document).bind("click","a.back",function(){
+        console.log("click.... back... out....")
+        mylayer.out();
+        return false;
+    });
+
     //activity -- contact
     blend.layerInit("calender",function(dom){
         var mylayer = blend.get("calender");
 
-        $("a.back",dom).click(function(){
-            console.log("click.... back... out....")
-            mylayer.out();
-            return false;
-        });
+        
 
         function onsuccess(){
             $("#apiresult",dom).val(JSON.stringify(data));
@@ -43,11 +45,7 @@
     blend.layerInit("sms",function(dom){
         var mylayer = blend.get("sms");
 
-        $("a.back",dom).click(function(){
-            console.log("click.... back... out....")
-            mylayer.out();
-            return false;
-        });
+        
 
         function onsuccess(){
             $("#apiresult",dom).val(JSON.stringify(data));
@@ -73,11 +71,7 @@
     blend.layerInit("video",function(dom){
         var mylayer = blend.get("video");
 
-        $("a.back",dom).click(function(){
-            console.log("click.... back... out....")
-            mylayer.out();
-            return false;
-        });
+        
 
         function onsuccess(){
             $("#apiresult",dom).val(JSON.stringify(data));
@@ -105,11 +99,7 @@
         
         var mylayer = blend.get("battery");
         
-        $("a.back",dom).click(function(){
-            console.log("click.... back... out....")
-            mylayer.out();
-            return false;
-        });
+        
 
         var showLevel = function(val){
             val = parseInt(val);
@@ -146,11 +136,7 @@
     blend.layerInit("network",function(dom){
         var mylayer = blend.get("network");
         
-        $("a.back",dom).click(function(){
-            console.log("click.... back... out....")
-            mylayer.out();
-            return false;
-        });
+        
 
         Blend.device.connection.get({
             onsuccess:function(data){
@@ -167,11 +153,7 @@
     blend.layerInit("device",function(dom){
         var mylayer = blend.get("device");
 
-        $("a.back",dom).click(function(){
-            console.log("click.... back... out....")
-            mylayer.out();
-            return false;
-        });
+        
 
         Blend.device.device.getImei({
             onsuccess:function(data){
@@ -215,11 +197,7 @@
     blend.layerInit("file_post",function(dom){
         var mylayer = blend.get("file_post");
 
-        $("a.back",dom).click(function(){
-            console.log("click.... back... out....")
-            mylayer.out();
-            return false;
-        });
+        
 
         function onsuccess(){
             $("#apiresult",dom).val(JSON.stringify(data));
@@ -248,11 +226,7 @@
     blend.layerInit("geolocation",function(dom){
         var mylayer = blend.get("geolocation");
 
-        $("a.back",dom).click(function(){
-            console.log("click.... back... out....")
-            mylayer.out();
-            return false;
-        });
+        
 
         Blend.device.geolocation.get({
             onsuccess:function(data){
@@ -269,11 +243,7 @@
     blend.layerInit("globalization",function(dom){
         var mylayer = blend.get("globalization");
 
-        $("a.back",dom).click(function(){
-            console.log("click.... back... out....")
-            mylayer.out();
-            return false;
-        });
+        
 
         Blend.device.globalization.getlocale({
             onsuccess:function(data){
@@ -291,11 +261,7 @@
     blend.layerInit("media",function(dom){
         var mylayer = blend.get("media");
 
-        $("a.back",dom).click(function(){
-            console.log("click.... back... out....")
-            mylayer.out();
-            return false;
-        });
+        
 
         function onsuccess(){
             $("#apiresult",dom).val(JSON.stringify(data));
@@ -316,11 +282,7 @@
     blend.layerInit("camera",function(dom){
         var mylayer = blend.get("camera");
 
-        $("a.back",dom).click(function(){
-            console.log("click.... back... out....")
-            mylayer.out();
-            return false;
-        });
+        
 
         Blend.device.media.captureMedia({
             onsuccess:function(data){
@@ -337,11 +299,7 @@
     blend.layerInit("QRCode",function(dom){
         var mylayer = blend.get("QRCode");
 
-        $("a.back",dom).click(function(){
-            console.log("click.... back... out....")
-            mylayer.out();
-            return false;
-        });
+        
 
         Blend.device.qr.startCapture({
             onsuccess:function(data){

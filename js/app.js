@@ -11,12 +11,18 @@
 
 	win.Sample = Sample;
 //注册全局事件
+	//Blend.ui.getLayerId()
+	$(document).bind("click","a.back",function(){
+        Blend.ui.get(Blend.ui.getLayerId()).out();
+        return false;
+    });
+
 	var registerEvent = function(dom,layer){
 		layer = layer||new Blend.ui.Layer({});
-        $("a.back",dom).click(function(){
-            layer.out();
-            return false;
-        });
+        // $("a.back",dom).click(function(){
+        //     layer.out();
+        //     return false;
+        // });
 
         $(".icon_down",dom).click(function(e){
 			$(this).closest('.screen').hide();
@@ -332,13 +338,63 @@
 			registerEvent(dom,blend.ui.get("push"));
 		},
 		layer:function(dom){
+			// newlayer
+			$("#newlayer",dom).click(function(){
+				new Blend.ui.Layer({
+					// id:"layer",
+					url:"samples/layer.html",
+					active:"true",
+				});
+				return false;
+			});
+
 			registerEvent(dom,blend.ui.get("layer"));
 		},
 		layergroup:function(dom){
+			var tabs = new Blend.ui.LayerGroup({
+                id: "tab",
+                layers: [{
+                    id: 'group1',
+                    url: 'samples/group1.html',
+                    "active":true,
+                    'autoload': true,
+                    "pullToRefresh":true,
+                    "pullBgColor":"ff0000",
+                    "pullText":"下拉刷新",
+                    "loadingText":"更新中...",
+                    "releaseText":"释放更新"
+                }, {
+                    id: 'group2',
+                    url: 'samples/group2.html',
+                        
+                    'autoload': true
+                }, {
+                    id: 'group3',
+                    url: 'samples/group3.html',
+                    'autoload': true
+                }],
+                onshow: function(event) {
+                    var id = event['detail'];
+                    $(".buttons-row a").removeClass('active');
+                    $("#" + id).addClass('active');
+                    // $("#navStyle").removeClass().addClass("ls"+ $("#" + id).index())
+                },
+                
+                left: 0,
+                top: 100
+            });
+			$(".buttons-row a").on("touchend",function(e) {
+                // alert("in");
+                e.preventDefault();
+                tabs.active(this.id);
+                return false;
+            });
+			
 			registerEvent(dom,blend.ui.get("layergroup"));
 		},
 		slider:function(dom){
 			registerEvent(dom,blend.ui.get("slider"));
+
 		}
 	}
 
@@ -363,10 +419,10 @@
 //--------程序入口--------
 (function(){
 	"use strict"
-	Blend.lightInit({
-	    ak:"xxxx", //轻应用apikey，请参考《获取API Key》文档
-	    module:["battery","blendui"]//根据需要添加模块到数组中即可
-	});
+	// Blend.lightInit({
+	//     ak:"xxxx", //轻应用apikey，请参考《获取API Key》文档
+	//     module:["battery","blendui"]//根据需要添加模块到数组中即可
+	// });
 
 	document.addEventListener("blendready",function(){
 		Blend.ui.layerInit("0",function(dom){

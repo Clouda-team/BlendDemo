@@ -1931,7 +1931,7 @@ label.label-radio:active .item-inner {
 .smart-select select {
   display: none;
 }
-.button {
+.button,.buttoncrema {
   border: 1px solid #e0e0e0;
   color: #262626;
   text-decoration: none;
@@ -1968,7 +1968,7 @@ input[type="button"].button {
 .button.button-round {
   border-radius: 27px;
 }
-.button.active {
+.button.active,.buttoncrema.active {
   background: #488ee6;
   color: #fff;
 }
