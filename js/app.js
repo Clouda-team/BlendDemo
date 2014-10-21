@@ -12,7 +12,7 @@
 	win.Sample = Sample;
 //注册全局事件
 	//Blend.ui.getLayerId()
-	$(document).bind("click","a.back",function(){
+	$(document).on("click","a.back",function(){
         Blend.ui.get(Blend.ui.getLayerId()).out();
         return false;
     });
@@ -590,6 +590,43 @@ battery:function(dom){
 			registerEvent(dom,blend.ui.get("layergroup"));
 		},
 		slider:function(dom){
+			// var blend = Blend.ui;
+			var mylayer = Blend.ui.get("Slider");
+
+	        $("a.back",dom).click(function(){
+	            console.log("click.... back... out....")
+	            mylayer.out();
+	            return false;
+	        });
+	        var Slider = Blend.ui.Slider;
+	        var images = [],slider;
+	        $(".page-content img",dom).each(function(i, n) {
+	            images.push({
+	                url: $(this).attr("src")
+	            });
+	        }).click(function(){
+	            if (!slider) {
+	                slider = new Slider({
+	                    "id": "test",
+	                    "bgColor": "#cccccc",
+	                    "images": images,
+	                    hasIndicator: true,
+	                    inactiveColor: "#888888",
+	                    activeColor: "#ff0000",
+	                    "tap": function(e) {
+	                    	slider.destroy();
+	                    	slider=undefined;
+	                        // history.back();
+	                    },
+	                    'slide': function(e) {
+	                        console.log(e.data.index)
+	                    }
+	                });
+	            } else {
+	            	slider.in();
+	                // slider && slider.destroy();
+	            }
+	        });
 			registerEvent(dom,blend.ui.get("slider"));
 
 		}
