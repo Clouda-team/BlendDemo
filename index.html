@@ -3,13 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>轻应用Demo</title>
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="stylesheet" href="css/crema.css">
-    <link rel="stylesheet" href="css/all.css">
-    <script src="js/api-latest.js"></script>
-    <script src="js/blend.js"></script>
-    <script src="js/all.js"></script>
+    <link rel="stylesheet" href="css/app.css">
+    <script name="baidu-tc-cerfication" type="text/javascript" charset="utf-8" src="http://apps.bdimg.com/blend/loader.js"></script>
 </head>
 <body>
 <div class="statusbar-overlay"></div>
@@ -22,159 +20,233 @@
                     <div class="navbar">
                         <div class="navbar-inner">
                             <div class="center">功能演示</div>
+                            <div class="right"></div>
                         </div>
                     </div>
-                    <div class="home">
-                        <div class="home_grid">
-                            <div class="home_item">
-                                <a href="calender.html" data-id="calender" class="home_link">
-                                    <div class="home_icon home_icon_lbs">
-                                    </div>
-                                    <span class="home_link-desc">calender</span>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="home_grid">
-                            <div class="home_item">
-                                <a href="sms.html" data-id="sms" class="home_link">
-                                    <div class="home_icon home_icon_lbs">
-                                    </div>
-                                    <span class="home_link-desc">sms</span>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="home_grid">
-                            <div class="home_item">
-                                <a href="video.html" data-id="video" class="home_link">
-                                    <div class="home_icon home_icon_lbs">
-                                    </div>
-                                    <span class="home_link-desc">video</span>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="home_grid">
-                            <div class="home_item">
-                                <a href="battery.html" data-id="battery" class="home_link">
-                                    <div class="home_icon home_icon_power">
-                                    </div>
-                                    <span class="home_link-desc">电池</span>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="home_grid">
-                            <div class="home_item">
-                                <a href="network.html" data-id="network" class="home_link">
-                                    <div class="home_icon home_icon_network">
-                                    </div>
-                                    <span class="home_link-desc">网络</span>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="home_grid">
-                            <div class="home_item">
-                                <a href="device.html" data-id="device" class="home_link">
-                                    <div class="home_icon home_icon_network">
-                                    </div>
-                                    <span class="home_link-desc">device</span>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="home_grid">
-                            <div class="home_item">
-                                <a href="file_post.html" data-id="file_post" class="home_link">
-                                    <div class="home_icon home_icon_media">
-                                    </div>
-                                    <span class="home_link-desc">post file</span>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="home_grid">
-                            <div class="home_item">
-                                <a href="geolocation.html" data-id="geolocation" class="home_link">
-                                    <div class="home_icon home_icon_lbs">
-
-                                    </div>
-                                    <span class="home_link-desc">地图定位</span>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="home_grid">
-                            <div class="home_item">
-                                <a href="globalization.html" data-id="globalization" class="home_link">
-                                    <div class="home_icon home_icon_lbs">
-                                    </div>
-                                    <span class="home_link-desc">系统语言</span>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="home_grid">
-                            <div class="home_item">
-                                <a href="media.html" data-id="media" class="home_link">
-                                    <div class="home_icon home_icon_media">
-
-                                    </div>
-                                    <span class="home_link-desc">媒体录制播放</span>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="home_grid">
-                            <div class="home_item">
-                                <a href="camera.html" data-id="camera" class="home_link">
-                                    <div class="home_icon home_icon_camera">
-
-                                    </div>
-                                    <span class="home_link-desc">摄像头</span>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="home_grid">
-                            <div class="home_item">
-                                <a href="QRCode.html" data-id="QRCode" class="home_link">
-                                    <div class="home_icon home_icon_camera">
-                                    </div>
-                                    <span class="home_link-desc">扫描二维码</span>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="content-block-title">BlendUI</div>
-                        <div class="home_grid">
-                            <div class="home_item">
-                                <a href="layer.html" data-id="Layer" class="home_link">
-                                    <div class="home_icon home_icon_camera">
-                                    </div>
-                                    <span class="home_link-desc">Layer</span>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="home_grid">
-                            <div class="home_item">
-                                <a href="layerGroup.html" data-id="LayerGroup" class="home_link">
-                                    <div class="home_icon home_icon_camera">
-                                    </div>
-                                    <span class="home_link-desc">LayerGroup</span>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="home_grid">
-                            <div class="home_item">
-                                <a href="slider.html" data-id="Slider" class="home_link">
-                                    <div class="home_icon home_icon_camera">
-                                    </div>
-                                    <span class="home_link-desc">Slider</span>
-                                </a>
-                            </div>
+                    <div class="title">端能力 blend.device</div>
+                    <div class="grid">
+                        <div class="item">
+                          <a href="samples/battery.html" data-id="battery" class="home_link">
+                                <i class="icon_home icon_battery">
+                                </i>
+                                <div class="desc">电池</div>
+                            </a>
                         </div>
                     </div>
-                    
+                    <div class="grid">
+                        <div class="item">
+                          <a href="./samples/network.html" data-id="network" class="home_link">
+                                <i class="icon_home icon_network">
+                                </i>
+                                <div class="desc">网络</div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="grid">
+                        <div class="item">
+                            <a href="samples/media.html" data-id="media" class="home_link">
+                                <i class="icon_home icon_media">
+                                </i>
+                                <div class="desc">本地媒体</div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="grid">
+                        <div class="item">
+                            <a href="samples/camera.html" data-id="camera" class="home_link">
+                                <i class="icon_home icon_camera">
+                                </i>
+                                <div class="desc">摄像头相册</div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="grid">
+                        <div class="item">
+                            <a href="samples/geolocation.html" data-id="geolocation" class="home_link">
+                                <i class="icon_home icon_geo">
+                                </i>
+                                <div class="desc">地理位置</div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="grid">
+                        <div class="item">
+                            <a href="samples/intent.html" data-id="intent" class="home_link">
+                                <i class="icon_home icon_intent">
+                                </i>
+                                <div class="desc">调用本地应用</div>
+                            </a>
+                        </div>
+                    </div>                    
+                    <div class="grid">
+                        <div class="item">
+                            <a href="samples/device.html" data-id="device" class="home_link">
+                                <i class="icon_home icon_device">
+                                </i>
+                                <div class="desc">设备信息</div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="grid">
+                        <div class="item">
+                            <a href="samples/explorer.html" data-id="explorer" class="home_link">
+                                <i class="icon_home icon_explorer">
+                                </i>
+                                <div class="desc">文件系统</div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="grid">
+                        <div class="item">
+                            <a href="samples/qrcode.html" data-id="qrcode" class="home_link">
+                                <i class="icon_home icon_qrcode">
+                                </i>
+                                <div class="desc">二维码</div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="grid">
+                        <div class="item">
+                            <a href="samples/position.html" data-id="position" class="home_link">
+                                <i class="icon_home icon_location">
+                                </i>
+                                <div class="desc">定位</div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="grid">
+                        <div class="item">
+                            <a href="samples/contact.html" data-id="contact" class="home_link">
+                                <i class="icon_home icon_contact">
+                                </i>
+                                <div class="desc">联系人</div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="grid">
+                        <div class="item">
+                            <a href="samples/voice.html" data-id="voice" class="home_link">
+                                <i class="icon_home icon_voice">
+                                </i>
+                                <div class="desc">语音识别</div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="grid">
+                        <div class="item">
+                            <a href="samples/compass.html" data-id="compass" class="home_link">
+                                <i class="icon_home icon_campass">
+                                </i>
+                                <div class="desc">指南针</div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="grid">
+                        <div class="item">
+                            <a href="samples/recognition.html" data-id="recognition" class="home_link">
+                                <i class="icon_home icon_recognition">
+                                </i>
+                                <div class="desc">人脸识别</div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="grid">
+                        <div class="item">
+                            <a href="samples/accelerator.html" data-id="accelerator" class="home_link">
+                                <i class="icon_home icon_accelerator">
+                                </i>
+                                <div class="desc">加速器</div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="grid">
+                        <div class="item">
+                            <a href="samples/capture.html" data-id="capture" class="home_link">
+                                <i class="icon_home icon_capture">
+                                </i>
+                                <div class="desc">截屏分享</div>
+                            </a>
+                        </div>
+                    </div>                       
+                    <div class="grid"></div>
+                    <div class="grid"></div>                                                            
+                    <!--百度云能力部分-->
+                    <div class="title clearfix">百度云能力 blend.mbaas</div>
+                    <div class="grid">
+                        <div class="item">
+                            <a href="samples/account.html" data-id="account" class="home_link">
+                                <i class="icon_home icon_account">
+                                </i>
+                                <div class="desc">账号登陆</div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="grid">
+                        <div class="item">
+                            <a href="samples/pay.html" data-id="pay" class="home_link">
+                                <i class="icon_home icon_pay">
+                                </i>
+                                <div class="desc">支付</div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="grid">
+                        <div class="item">
+                            <a href="samples/share.html" data-id="share" class="home_link">
+                                <i class="icon_home icon_share"></i>
+                                <div class="desc">分享</div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="grid">
+                        <div class="item">
+                            <a href="samples/message.html" data-id="message" class="home_link">
+                                <i class="icon_home icon_push">
+                                </i>
+                                <div class="desc">push</div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="grid"></div>
+                    <div class="grid"></div>                    
+                    <!--百度云能力部分-->
+                    <div class="title clearfix">页面管理能力 blend.ui</div>
+                    <div class="grid">
+                        <div class="item">
+                            <a href="samples/layer.html" data-id="layer" class="home_link">
+                                <i class="icon_home icon_layer">
+                                </i>
+                                <div class="desc">layer</div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="grid">
+                        <div class="item">
+                            <a href="samples/layergroup.html" data-id="layergroup" class="home_link">
+                                <i class="icon_home icon_layergroup">
+                                </i>
+                                <div class="desc">layergroup</div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="grid">
+                        <div class="item">
+                            <a href="samples/slider.html" data-id="slider" class="home_link">
+                                <i class="icon_home icon_slider">
+                                </i>
+                                <div class="desc">slider</div>
+                            </a>
+                        </div>
+                    </div>                                                           
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
-<script>
-
-</script>
 </body>
+<script src="js/api-latest.js"></script>
+<script src="js/blend.js"></script>
+<script type="text/javascript" src="js/app.js"></script>   
+</script>
 </html>
