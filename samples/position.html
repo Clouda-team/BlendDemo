@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>battery demo</title>
-    <script src="http://api.map.baidu.com/components?ak=9abc181363509f0afc01775df2349a7d&v=1.0"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=9abc181363509f0afc01775df2349a7d"></script>
 </head>
 <body>
 <div class="pages">
@@ -18,26 +18,22 @@
         </div>
         <div class="page-content">
             <div class="screen">
-                <lbs-map width="100%" style="height:500px" center="116.307852,40.057031">
-                    <lbs-poi name="百度大厦" location="116.307852,40.057031" addr="北京市海淀区上地十街10号" ></lbs-poi>
-                </lbs-map>
-                <div class="next" role="button">
-                    <span class="icon_down"> </span>
-                </div>
+              	<div id="allmap" style="height:100%;width:100%"></div>
             </div>
             <div class="screen none">
                 <div class="title clearfix">接口返回值</div>
-                <textarea class="full h120" name="" id="api">
-                    api get result here...
-                </textarea>
+                <textarea class="full h120" name="" id="api">api get result here...</textarea>
                 <div class="title clearfix">成功返回值</div>
                 <textarea class="half h120 fl br1" name="method">get</textarea>
                 <textarea class="half h120 fl" name="success">api get result here...</textarea>
             </div>
-            <script type="text/javascript" src="http://api.map.baidu.com/components?ak=9abc181363509f0afc01775df2349a7d&v=1.0"></script>        
+            <div class="next" role="button">
+                <span class="icon_down"> </span>
+            </div>                  
         </div>
     </div>
 </div>
 </body>
 <script type="text/javascript" src="../js/app.js"></script>
+</script>
 </html>

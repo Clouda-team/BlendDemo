@@ -18,19 +18,15 @@
         <div class="page-content">
             <div class="screen">
                 <div class="center">
-                    <a id="status" class="button button-sm">获取状态</a>
-                    <a id="startlisten" class="button button-sm">开始监听</a>
-                    <a id="endlisten" class="button button-sm">停止监听</a>
+                    <a id="status" class="button button-xs">获取状态</a>
+                    <a id="start" class="button button-xs">开始监听</a>
                 </div>
-                <div class="center mt60">
-                    <i class="icon_wifi"></i>
-                    <div id="networktype" class="center">
-                        当前网络类型:
-                    </div>
+                <div class="center" style="margin-top:30px;">
+                    <i id="network" class="network warning"></i>
                 </div>
-                <div class="next" role="button">
-                    <span class="icon_down"> </span>
-                </div>                
+                <div class="center"style="margin-top:30px;">
+                    <span style="font-size:20px">网络类型: </span><span  style="font-size:20px" id="networktype">未知</span>
+                </div>                  
             </div>
             <div class="screen none">
                 <div class="title clearfix">接口返回值</div>
@@ -40,7 +36,10 @@
                 <div class="title clearfix">成功返回值</div>
                 <textarea class="half h120 fl br1" name="method">get</textarea>
                 <textarea class="half h120 fl" name="success">api get result here...</textarea>
-            </div>         
+            </div>
+            <div class="next" role="button">
+                <span class="icon_down"> </span>
+            </div>          
         </div>
     </div>
 </div>

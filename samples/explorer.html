@@ -17,28 +17,25 @@
         </div>
         <div class="page-content">
             <div class="screen">
-                <div>
-                    <label>本地文件</label><input name="file" type="file" class=""/>              
+                <div class="center mt30">
+                    <button id="upload" class="button button-lg">文件上传</buttom>
                 </div>
-                <div>
-                    <label>URL</label><input name="url" type="text" class=""/>      
-                </div>
-                <div class="center">
-                    <a id="upload" class="button button_lg">文件上传</a>
-                </div>
-                <div class="next" role="button">
-                    <span class="icon_down"> </span>
+                <div class="mt30"></div>
+                <div id="progress" class="progress">
+                    <div id="load" class="load"></div>
+                    <div id="loadval" class="percent">0%</div>
                 </div>
             </div>
             <div class="screen none">
                 <div class="title clearfix">接口返回值</div>
-                <textarea class="full h120" name="" id="api">
-                    api get result here...
-                </textarea>
+                <textarea class="full h120" name="" id="api">api get result here...</textarea>
                 <div class="title clearfix">成功返回值</div>
                 <textarea class="half h120 fl br1" name="method">get</textarea>
                 <textarea class="half h120 fl" name="success">api get result here...</textarea>
-            </div>         
+            </div>
+            <div class="next" role="button">
+                <span class="icon_down"> </span>
+            </div>                    
         </div>
     </div>
 </div>

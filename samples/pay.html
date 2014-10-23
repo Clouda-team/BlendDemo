@@ -17,14 +17,25 @@
         </div>
         <div class="page-content">
             <div class="screen">
-                <div class="h120 box">    
-                </div>
-                <div class="center">
-                <a class="button button-lg">支付</a>    
-                </div>
-                <div class="next" role="button">
-                    <span class="icon_down"> </span>
-                </div>                
+                <div class="title">基本信息</div>
+                <ul class="list clearfix">
+                    <li><div class="appspan2">订单号: </div><div  class="appspan4" id="runtime">BBJ142014083108428</div></li>
+                    <li><div class="appspan2">订单状态: </div><div  class="appspan4" id="system">在线支付</div></li>
+                    <li><div class="appspan2">下单日期: </div><div  class="appspan4" id="interface">2014-08-31   16:40:57</div></li>
+                    <li><div class="appspan2">合计: </div><div  class="appspan4" id="interface">61.00元</div></li>
+                </ul>
+                <div class="title">已定菜单</div> 
+                <ul class="list clearfix">             
+                    <li>
+                        <div class="appspan2">番茄火锅</div>
+                        <div class="appspan2">1份  </div>
+                        <div class="appspan2">61.00元</div>
+                    </li>
+                </ul>                             
+                <div class="center mt30">
+                    <a id="pay" class="button button-lg">支付</a>    
+                </div>  
+                <input type="hidden" name="orderinfo" id="orderinfo" value="currency=1&extra=&goods_desc=goodsname&goods_name=goodsname&goods_url=http://item.jd.com/736610.html&input_charset=1&order_create_time=20141021153458&order_no=1413876898000&pay_type=2&return_url=http://item.jd.com/736610.html&service_code=1&sign_method=1&sp_no=3400000001&total_amount=1&transport_amount=0&unit_amount=1&unit_count=1&sign=a047f009c225ecc12445f7f99a8dfdaf&goods_channel=&goods_channel_sp=0001" />
             </div>
             <div class="screen none">
                 <div class="title clearfix">接口返回值</div>
@@ -34,7 +45,10 @@
                 <div class="title clearfix">成功返回值</div>
                 <textarea class="half h120 fl br1" name="method">get</textarea>
                 <textarea class="half h120 fl" name="success">api get result here...</textarea>
-            </div>         
+            </div> 
+            <div class="next" role="button">
+                <span class="icon_down"> </span>
+            </div>                     
         </div>
     </div>
 </div>

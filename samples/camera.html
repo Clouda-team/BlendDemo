@@ -24,14 +24,11 @@
     <div class="page-content">
         <div class="screen">
             <div class="center">
-                <a class="button button-xs" id="imageurl">获取照片URL</a>
-                <a class="button button-xs" id="imagebase64">获取照片base64数据</a>
+                <a class="button button-xs" id="imageurl">拍照</a>
+                <a class="button button-xs" id="imagebase64">相册</a>
             </div>
-            <div class="center">
-                <img src="../img/icon/video.png" alt="" width="200" height="200" id="photo">
-            </div>
-            <div class="next" role="button">
-                <span class="icon_down"> </span>
+            <div class="center mt30">
+                <img id="media" src="../img/icon/default.png" alt="" width="270" height="186" id="photo">
             </div> 
         </div>
         <div class="screen none">
@@ -42,7 +39,10 @@
             <div class="title clearfix">成功返回值</div>
             <textarea class="half h120 fl br1" name="method">get</textarea>
             <textarea class="half h120 fl" name="success">api get result here...</textarea>
-        </div> 
+        </div>
+        <div class="next" role="button">
+            <span class="icon_down"> </span>
+        </div>               
     </div>
 </div>
 </div>

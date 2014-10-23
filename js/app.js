@@ -9,6 +9,24 @@
 
 	}
 
+
+//提示浮层方法
+	var Tips = function(){
+
+	}	
+
+	Tips = {
+		_template: function(text){
+			return $('<div class="tips">'+text+'</div>');
+		},
+		show: function(dom,config){
+			$(".page-content",dom).append(this._template(config.text));
+			setTimeout(function(){
+				$(".page-content",dom).find(".tips").addClass("opacity").hide();
+			},2000);
+		}
+	}
+
 	win.Sample = Sample;
 //注册全局事件
 	//Blend.ui.getLayerId()
@@ -17,30 +35,37 @@
         return false;
     });
 
-	var registerEvent = function(dom,layer){
-		layer = layer||new Blend.ui.Layer({});
-        // $("a.back",dom).click(function(){
-        //     layer.out();
-        //     return false;
-        // });
+	$(document).on("touchend",".icon_down",function(){
+		var screens = $(this).closest(".page-content").find('.screen');
+		if($(this).hasClass('reverse')){
+			screens.eq(0).show();
+			screens.eq(1).hide();
+			$(this).removeClass('reverse');
+		}else{
+			screens.eq(1).show();
+			screens.eq(0).hide();
+			$(this).addClass('reverse');
+		}
+    });
 
-        $(".icon_down",dom).click(function(e){
-			$(this).closest('.screen').hide();
-			$(this).closest('.screen').next('.screen').show();
-		});
-		/*
-		document.addEventListener('touchmove',function(){
-			if (event.targetTouches.length == 1) {
-		　　	event.preventDefault();// 阻止浏览器默认事件，重要 
-		        var touch = event.targetTouches[0];
-		        $(".screen:visible").hide().siblings().show();
-		    }
-		})
-		*/
-	}
+
+
+	$(document).on("touchstart",".grid",function(){
+		$(this).addClass('grid_hover');
+    }); 
+
+    $(document).on("touchend",".grid",function(){
+		$(this).removeClass('grid_hover');
+    });
+
+    $(document).on("touchmove",".grid",function(){
+    	if($(this).hasClass('grid_hover')){
+    		$(this).removeClass('grid_hover');
+    	}
+    });     
 
 	Sample.prototype = {
-battery:function(dom){
+		battery:function(dom){
 	        var showLevel = function(val){
 	            val = parseInt(val);
 	            var level = $("#level",dom),value=$("#value",dom);
@@ -67,40 +92,115 @@ battery:function(dom){
 	                $("#api",dom).val(JSON.stringify(errno));
 	            }
 	        });
-	        var mylayer = blend.ui.get("battery");
-			registerEvent(dom,mylayer);
+	        var mylayer = Blend.ui.get("battery");
 		},
 		network:function(dom){
+				var success = function(data){
+		                $("#api",dom).val(JSON.stringify(data));
+		                switch(data){
+		                	case Blend.device.CONNECTION_STATUS.NONE:
+		                		$("#network",dom).removeClass().addClass("network warning");
+		                		break;
+		                	case Blend.device.CONNECTION_STATUS.UNKNOWN:
+		                		$("#network",dom).removeClass().addClass("network unknown");
+		                		break;			                				                	
+		                	case Blend.device.CONNECTION_STATUS.WIFI:
+		                		$("#network",dom).removeClass().addClass("network wifi");
+		                		break;
+		                	case Blend.device.CONNECTION_STATUS.CELL_3G:
+		                		$("#network",dom).removeClass().addClass("network g3");
+		                		break;
+		                	case Blend.device.CONNECTION_STATUS.CELL_2G:
+		                		$("#network",dom).removeClass().addClass("network g2");
+		                		break;
+		                	case Blend.device.CONNECTION_STATUS.CELL_4G:
+		                		$("#network",dom).removeClass().addClass("network g4");
+		                		break;
+		                	case Blend.device.CONNECTION_STATUS.CELL:
+		                		$("#network",dom).removeClass().addClass("network cell");
+		                		break;	
+		                	case Blend.device.CONNECTION_STATUS.ETHERNET:
+		                		$("#network",dom).removeClass().addClass("network ethernet");
+		                		break;
+		                }
+		                $("#networktype",dom).text(data);
+					}
+				var fail = function(data){
+		                $("#api",dom).val(JSON.stringify(data));
+					}			
 			$("#status",dom).click(function(event){
 				event.preventDefault();
 				Blend.device.connection.get({
+					onsuccess: success,
+					onfail: fail
+				});
+			});
+			$("#start",dom).click(function(event){
+				event.preventDefault();
+				if($(this).hasClass("button-white")){
+					Blend.device.connection.stopListen();
+					$(this).removeClass('button-white').text('开始监听');
+				}else{
+					Blend.device.connection.startListen({
+						onsuccess: success,
+						onfail: fail
+					});
+					$(this).addClass('button-white').text('停止监听');
+				}
+			});			
+		},
+		media:function(dom){
+
+			var result;
+
+			$("#video").click(function(event){
+				var link = result.fullPath ? result.fullPath : '';
+				Blend.mbaas.mediaplayer.play(link,{
 					onsuccess:function(data){
-		                $("#api",dom).val(JSON.stringify(data));
-		                $("#networktype",dom).text(data);
+						$("#api",dom).val(JSON.stringify(data));
 					},
 					onfail: function(data){
-		                $("#api",dom).val(JSON.stringify(data));
+						$("#api",dom).val(JSON.stringify(data));
 					}
 				});
 			});
-			registerEvent(dom,blend.ui.get("network"));
+
+			$("#audio").click(function(){
+				var link = result.fullPath ? result.fullPath : '';
+				Blend.device.media.operateMedia(link, 'play', {
+					onsuccess:function(){
+						$("#api",dom).val(JSON.stringify(data));
+					},
+					onfail:function(){
+						$("#api",dom).val(JSON.stringify(data));
+					}
+				})
+			});
+
+			$("#recordvideo,#recordaudio").click(function(){
+				var mediaType = '';
+				if($(this).attr('id') === 'recordvideo'){
+					mediaType = Blend.device.MEDIA_TYPE.VIDEO;					
+				}else{
+					mediaType = Blend.device.MEDIA_TYPE.AUDIO;
+				}
+									
+				Blend.device.media.captureMedia({
+					onsuccess: function(data){
+						result = data;
+						$("#api",dom).val(JSON.stringify(data));
+					},
+					onfail: function(data){
+						$("#api",dom).val(JSON.stringify(data));
+					},
+					mediaType: mediaType,
+					source: 0,
+					quality: 80
+				});
+			});
 		},
-		media:function(dom){
-			$("#take,#photo").click(function(event){
-				var id = $(this).attr('id');
-				var mediaType = Blend.device.MEDIA_TYPE.IMAGE
-				if(id === 'take'){ 
-					source = 0;
-				}else{ 
-					source = 1
-				}
-				if(id === 'recordvideo'){
-					mediaType = Blend.device.MEDIA_TYPE.VIDEO;
-					source = 0;
-				}else if(id === 'video'){
-					mediaType = Blend.device.MEDIA_TYPE.VIDEO;
-					source = 1;
-				}
+		camera:function(dom){
+			$("#imageurl",dom).click(function(){
 				Blend.device.media.captureMedia({
 					onsuccess:function(data){
 						$("#api",dom).val(JSON.stringify(data));
@@ -109,46 +209,53 @@ battery:function(dom){
 					onfail: function(data){
 						$("#api",dom).val(JSON.stringify(data));
 					},
-					mediaType: mediaType,
-					source: source,
+					mediaType: Blend.device.MEDIA_TYPE.IMAGE,
+					source: 0,
 					base64: true,
 					quality: 90,
 					width: 260,
 					height: 280
 				});
 			});
-			registerEvent(dom,blend.ui.get("media"));
-		},
-		camera:function(dom){
-			$("#imageurl",dom).click(function(){
-	            clouda.device.media.captureMedia({
-	                mediaType : 0,
-	                source : 0,
-	                onfail : function(err){
-	                    alert(JSON.stringify(err));
-	                },
-	                onsuccess : function(mediaFile){
-	                    alert(JSON.stringify(mediaFile));
-	                } 
-	            });
-			});
 			$("#imagebase64",dom).click(function(){
-	            clouda.device.media.captureMedia({
-	                mediaType : 0,
-	                source : 0,
-	                onfail : function(err){
-	                        alert(JSON.stringify(err));
-	                },
-	                onsuccess : function(mediaFile){
-	                        //返回读取到的图片文件的本地全信息
-	                        alert(JSON.stringify(mediaFile));
-	                } 
-	            });
+				Blend.device.media.captureMedia({
+					onsuccess:function(data){
+						$("#api",dom).val(JSON.stringify(data));
+						$("#media",dom).attr({src:"data:"+data.type+";base64,"+data.base64});
+					},
+					onfail: function(data){
+						$("#api",dom).val(JSON.stringify(data));
+					},
+					mediaType: Blend.device.MEDIA_TYPE.IMAGE,
+					source: 1,
+					base64: true,
+					quality: 90,
+					width: 260,
+					height: 280
+				});
 			});			
-            registerEvent(dom,blend.ui.get("camera"));
 		},
-		geolocaiton:function(dom){
-			registerEvent(dom,blend.ui.get("geolocaiton"));
+		globalization:function(dom){
+			Blend.device.globalization.getlocale({
+				onsuccess: function(data){
+					$("#api",dom).append(JSON.stringify(data));
+					$("#locale").text(data);
+					Tips.show(dom,{text:"获取成功"});
+				},
+				onfail: function(data){
+					$("#api",dom).append(JSON.stringify(data));
+				}
+			});
+
+/*			Blend.device.globalization.getPreferredLanguage({
+				onsuccess: function(data){
+					$("#api",dom).append(JSON.stringify(data));
+					$("#language").text(data);
+				},
+				onfail: function(data){
+					$("#api",dom).append(JSON.stringify(data));
+				}
+			});	*/		
 		},
 		intent:function(dom){
 			var intent = {
@@ -191,7 +298,6 @@ battery:function(dom){
 			    	intent:intent
 			    });
 		    });
-		    registerEvent(dom,blend.ui.get("intent"));
 		},
 		device:function(dom){
 			var options = {
@@ -214,23 +320,46 @@ battery:function(dom){
 			$("#screen",dom).click(function(){
 				Blend.device.device.getScreenSize(options)
 			});						
-			registerEvent(dom,blend.ui.get("device"));
 		},
 		explorer:function(dom){
 			$("#upload",dom).click(function(){
-				var path = $("[name=file]").val();
-				var target = $("[name=url]").val();
-				var options = {
+				$("#load").css({width:0});
+				$("#loadval").text("0%");
+				Blend.device.media.captureMedia({
 					onsuccess:function(data){
-						$("#api",dom).val(JSON.stringify(data));
+						var target = 'http://bcs.duapp.com/cloudaapi/filetest';
+						var options = {
+							onsuccess:function(data){
+								$("#api",dom).val(JSON.stringify(data));
+							},
+							onfail: function(data){
+								$("#api",dom).val(JSON.stringify(data));
+							},
+							onprogress: function(data){
+								var width = Math.ceil((data.loaded/data.total)*100)+'%';
+								$("#load").css({width:width});
+								if(width === '100%'){
+									$("#loadval").text('上传成功');
+									Tips.show(dom,{text:"上传成功"});
+								}else{
+									$("#loadval").text(width);
+								}
+							},
+							uploadKey: "1111"
+						}
+						Blend.device.fs.post(data.fullPath, target, options);
 					},
 					onfail: function(data){
 						$("#api",dom).val(JSON.stringify(data));
-					}
-				}
-				Blend.device.fs.post(path,target,options);
+					},
+					mediaType: Blend.device.MEDIA_TYPE.IMAGE,
+					source: 1,
+					base64: true,
+					quality: 90,
+					width: 260,
+					height: 280
+				});	
 			})
-			registerEvent(dom,blend.ui.get("explorer"));
 		},
 		qrcode:function(dom){
 			$("#qrcode,#barcode").click(function(){
@@ -249,38 +378,53 @@ battery:function(dom){
 					type: type
 				});
 			})
-			registerEvent(dom,blend.ui.get("qrcode"));
 		},
 		position:function(dom){
 			var options = {
 				onsuccess: function(data){
-					var params = {
-						location: data.longitude+','+data.latitude,
-					};
-					$("[lbs-map']",dom).attr({center:params.location});
-					$("[lbs-poi']",dom).attr({location:params.location});
-					$("#api",dom).val(JSON.stringify(data));
+					// 百度地图API功能
+					var map = new BMap.Map("allmap");
+					map.centerAndZoom(new BMap.Point(data.longitude, data.latitude), 20); 
+					map.enableScrollWheelZoom(true);
+
+					//坐标转换完之后的回调函数
+					translateCallback = function (point){
+						map.clearOverlays(); 
+						var marker = new BMap.Marker(point);
+						map.addOverlay(marker);
+						map.panTo(point); 
+						map.setCenter(point);
+					}
+					BMap.Convertor.translate(gpsPoint,0,translateCallback);     //真实经纬度转成百度坐标				
 				},
 				onfail: function(data){
 					$("#api",dom).val(JSON.stringify(data));
 				}			
 			}
 			Blend.device.geolocation.get(options);
-			registerEvent(dom,blend.ui.get("position"));
 		},
 		contact:function(dom){
-			var fields = ['name'];
+			var fields = ['*'];
+     		var filter = '';
 			Blend.device.contact.find(fields,{
 				onsuccess: function(data){
+					var html = [];
+					var temp = '';
+					for(var i in data){
+						if(data && data[i] && data[i].displayName&&data[i].phoneNumbers && data[i].phoneNumbers[0]){
+							temp = '<li><p>'+data[i].displayName+'</p><p>'+data[i].phoneNumbers[0].value+'</p></li><li class="split"></li>';
+							html.push(temp);
+						}
+					}
 					$("#api",dom).val(JSON.stringify(data));
+					$('#contact').append(html.join(''));
 				},
 				onfail: function(data){
 					$("#api",dom).val(JSON.stringify(data));
 				},
-				filter: '',
+				filter: filter,
 				multiple: true
 			});
-			registerEvent(dom,blend.ui.get("contact"));
 		},
 		voice:function(dom){
 			var ak = "8MAxI5o7VjKSZOKeBzS4XtxO";
@@ -325,7 +469,6 @@ battery:function(dom){
 					type: Blend.mbaas.tts.TYPE_DICT_US
 				});
 			});
-			registerEvent(dom,blend.ui.get("voice"));
 		},
 		compass:function(dom){
 			function rotate(deg,dom){
@@ -338,79 +481,90 @@ battery:function(dom){
 				});
 			}
 			$("#start",dom).click(function(){
-				Blend.device.compass.startListen({
-					onsuccess: function(data){
-						rotate(data.magneticHeading,dom);
-						$("#deg").text(data.magneticHeading);
-						$("#api",dom).val(JSON.stringify(data));
-					},
-					onfail: function(data){
-						$("#api",dom).val(JSON.stringify(data));
-					},
-					frequency: 100
-				});
-			});
-			$("#stop").click(function(){
-				Blend.device.compass.stopListen();
-			});			
-			registerEvent(dom,blend.ui.get("compass"));
+				if ($(this).hasClass('button-white')) {
+					Blend.device.compass.stopListen();
+					$(this).text('开始').removeClass("button-white");
+				}else{
+					Blend.device.compass.startListen({
+						onsuccess: function(data){
+							rotate(data.magneticHeading,dom);
+							$("#deg").text(data.magneticHeading);
+							$("#api",dom).val(JSON.stringify(data));
+						},
+						onfail: function(data){
+							$("#api",dom).val(JSON.stringify(data));
+						},
+						frequency: 2000
+					});
+					$(this).text('停止').addClass("button-white");
+				}
+			});		
 		},
 		recognition:function(dom){
-			var uid = "demo_user";
+			var uid = "123456";
 			$("#register",dom).click(function(){
-				alert('registerEvent');
-				clouda.mbaas.facerecognition.reister(uid,{
+				Blend.mbaas.face.register(uid,{
 					onsuccess: function(data){
-						alert(1);
 						$("#api",dom).val(JSON.stringify(data));
+						Tips.show(dom,{text:"注册成功"});
 					},
 					onfail: function(data){
-						alert(2);
 						$("#api",dom).val(JSON.stringify(data));
+						Tips.show(dom,{text:"注册失败"})
 					}
 				})
 			});
 			$("#face",dom).click(uid,function(){
-				clouda.mbaas.facerecognition.verify(uid,{
+				Blend.mbaas.face.verify(uid,{
 					onsuccess: function(data){
 						$("#api",dom).val(JSON.stringify(data));
+						Tips.show(dom,{text:"识别通过"});
 					},
 					onfail: function(data){
 						$("#api",dom).val(JSON.stringify(data));
+						Tips.show(dom,{text:"识别失败"});
 					}
 				})				
 			});
 			$("#blink",dom).click(uid,function(){
-				clouda.mbaas.facerecognition.checkBlink(uid,{
+				Blend.mbaas.face.checkBlink(uid,{
 					onsuccess: function(data){
+						Tips.show(dom,{text:"眨眼了！"});
 						$("#api",dom).val(JSON.stringify(data));
 					},
 					onfail: function(data){
+						Tips.show(dom,{text:"火眼金睛"});
 						$("#api",dom).val(JSON.stringify(data));
 					}
 				})
 			});
-			registerEvent(dom,blend.ui.get("recognition"));
 		},
 		accelerator:function(dom){
 			$("#start",dom).click(function(){
-				Blend.device.accelerometer.startListen({
-					onsuccess: function(data){
-						$("#x",dom).text(data.x);
-						$("#y",dom).text(data.y);
-						$("#z",dom).text(data.z);
-						$("#api",dom).val(JSON.stringify(data));
-					},
-					onfail: function(data){
-						$("#api",dom).val(JSON.stringify(data));
-					},
-					frequency: 2000
-				});
-			});
-			$("#stop").click(function(){
-				Blend.device.accelerometer.stopListen();
-			});			
-			registerEvent(dom,blend.ui.get("accelerator"));
+				if($(this).hasClass('button-white')){
+					Blend.device.accelerometer.stopListen({
+						onsuccess: function(){
+							$("#api",dom).val(JSON.stringify(data));
+						}
+					});
+					$("#start").text('开始加速').removeClass('button-white');
+				}else{
+					Blend.device.accelerometer.startListen({
+						onsuccess: function(data){
+							$("#x",dom).text(data.x);
+							$("#y",dom).text(data.y);
+							$("#z",dom).text(data.z);
+							$("#api",dom).val(JSON.stringify(data));
+							that.attr('disabled',false);
+						},
+						onfail: function(data){
+							$("#api",dom).val(JSON.stringify(data));
+						},
+						frequency: 2000
+					});
+					$("#start").text('停止加速').addClass('button-white');
+				}
+			});		
 		},
 		capture:function(dom){
 			$("#captureshare",dom).click(function(){
@@ -426,6 +580,7 @@ battery:function(dom){
 			$("#capture",dom).click(function(){
 				Blend.device.screen.captureScreen({
 					onsuccess: function(data){
+						$("#media").attr({src:"data:image/png;base64,"+data});
 						$("#api",dom).val(JSON.stringify(data));
 					},
 					onfail: function(data){
@@ -433,18 +588,6 @@ battery:function(dom){
 					}
 				})
 			});
-			$("#share",dom).click(function(){
-				var base64imageData = '';
-				Blend.device.screen.shareImage(base64imageData,{
-					onsuccess: function(data){
-						$("#api",dom).val(JSON.stringify(data));
-					},
-					onfail: function(data){
-						$("#api",dom).val(JSON.stringify(data));
-					}
-				});
-			});
-			registerEvent(dom,blend.ui.get("capture"));
 		},
 		account:function(dom){
 			$("#login",dom).click(function(){
@@ -455,21 +598,44 @@ battery:function(dom){
 					onfail: function(data){
 						$("#api",dom).val(JSON.stringify(data));
 					},
-					redirect_uri: "",
-					mediaType: '',
-					scope: '',
-					authorize_url: ''
+					// redirect_uri: "oob",
+					redirect_uri: "http://blenddemo.duapp.com/other/redirect.html",
+					login_mode:1,
+					login_type:"sms",
 				})
 			});
-			$("#sign",dom).click(function(){
-			});
-			$("#logout",dom).click(function(){
-
-			});
-			registerEvent(dom,blend.ui.get("account"));
 		},
 		pay:function(dom){
-			registerEvent(dom,blend.ui.get("pay"));
+			$("#pay",dom).click(function(){
+
+				var PARTNER_ID = "qazxswe";
+			    var options1 = {
+			    	onsuccess:function(data){
+				        alert('success '+JSON.stringify(data));
+				    },
+				    onfail:function(data){
+				    	alert('fail '+JSON.stringify(data));
+				    }
+			    };
+			    
+			  	clouda.mbaas.pay.init(PARTNER_ID,options1);
+
+				var orderInfo =document.getElementById("orderinfo").value; 
+			   
+			    var successCallback = function(resultText) {
+			    	alert(resultText);
+			    };
+		      	var errorCallback  = function(code) {
+		        	alert("error dopay, errcode = " + code);
+		      	};
+			    var options2 = {};
+		      	options2.orderInfo = orderInfo;
+		      	options2.showdDialog = true;
+		      	options2.onsuccess = function(){};
+		      	options2.onfail = function(){};
+			      
+			    clouda.mbaas.pay.doPay(options2);
+			});
 		},
 		share:function(dom){
 			$('#share',dom).click(function(){
@@ -487,7 +653,6 @@ battery:function(dom){
 					imageUrl: 'http://www.baidu.com/img/bdlogo.png'
 				});	
 			})		
-			registerEvent(dom,blend.ui.get("share"));
 		},
 		message:function(dom){
 			$("#unicast",dom).click(function(){
@@ -532,21 +697,17 @@ battery:function(dom){
 					}
 				});
 			});			
-			registerEvent(dom,blend.ui.get("message"));
 		},
-		
 		layer:function(dom){
 			// newlayer
-			// $("#newlayer",dom).click(function(){
-			// 	new Blend.ui.Layer({
-			// 		// id:"layer",
-			// 		url:"samples/layer.html",
-			// 		active:"true",
-			// 	});
-			// 	return false;
-			// });
-
-			registerEvent(dom,blend.ui.get("layer"));
+			$("#newlayer",dom).click(function(){
+				new Blend.ui.Layer({
+					// id:"layer",
+					url:"samples/layer.html",
+					active:"true",
+				});
+				return false;
+			});
 		},
 		layergroup:function(dom){
 			var tabs = new Blend.ui.LayerGroup({
@@ -558,14 +719,9 @@ battery:function(dom){
                     'autoload': true,
                     "pullToRefresh":true,
                     "pullBgColor":"ff0000",
-                    "ptrFn":function(){
-                        console.log("refresh1 callback");
-                        setTimeout(function(){
-                            
-                            Blend.ui.layerStopRefresh();
-
-                        },800);
-                    }
+                    "pullText":"下拉刷新",
+                    "loadingText":"更新中...",
+                    "releaseText":"释放更新"
                 }, {
                     id: 'group2',
                     url: 'samples/group2.html',
@@ -574,21 +730,7 @@ battery:function(dom){
                 }, {
                     id: 'group3',
                     url: 'samples/group3.html',
-                    'autoload': true,
-                    "pullToRefresh":true,
-                    "pullText":"下拉刷新：）",
-                    "loadingText":"更新中...",
-                    "releaseText":"释放更新^_^",
-                    "ptrFn":function(){
-                        console.log("refresh3 callback");
-                        setTimeout(function(){
-                            
-                            Blend.ui.layerStopRefresh();
-
-                        },500);
-                    }
-                    
-                
+                    'autoload': true
                 }],
                 onshow: function(event) {
                     var id = event['detail'];
@@ -606,48 +748,8 @@ battery:function(dom){
                 tabs.active(this.id);
                 return false;
             });
-            // $("a.back",dom).on("click",function(){
-            //     Blend.ui.get("layergroup").out();
-            //     return false;
-            // });
-			
-			registerEvent(dom,blend.ui.get("layergroup"));
 		},
 		slider:function(dom){
-			// var blend = Blend.ui;
-			// var mylayer = Blend.ui.get("Slider");
-
-	        
-	        var Slider = Blend.ui.Slider;
-	        var images = [],slider;
-	        $(".page-content img",dom).each(function(i, n) {
-	            images.push({
-	                url: $(this).attr("src")
-	            });
-	        }).click(function(){
-	            if (!slider) {
-	                slider = new Slider({
-	                    "id": "test",
-	                    "bgColor": "#cccccc",
-	                    "images": images,
-	                    hasIndicator: true,
-	                    inactiveColor: "#888888",
-	                    activeColor: "#ff0000",
-	                    "tap": function(e) {
-	                    	slider.destroy();
-	                    	slider=undefined;
-	                        // history.back();
-	                    },
-	                    'slide': function(e) {
-	                        console.log(e.data.index)
-	                    }
-	                });
-	            } else {
-	            	slider.in();
-	                // slider && slider.destroy();
-	            }
-	        });
-			registerEvent(dom,blend.ui.get("slider"));
 
 		}
 	}
@@ -672,11 +774,13 @@ battery:function(dom){
 
 //--------程序入口--------
 (function(){
-	"use strict"
-	// Blend.lightInit({
-	//     ak:"xxxx", //轻应用apikey，请参考《获取API Key》文档
-	//     module:["battery","blendui"]//根据需要添加模块到数组中即可
-	// });
+	
+	"use strict";
+
+	Blend.lightInit({
+	    ak:"vm84NzKXo6SzFWj5xu7BsCia", //轻应用apikey，请参考《获取API Key》文档
+	    module:[]
+	});
 
 	document.addEventListener("blendready",function(){
 		Blend.ui.layerInit("0",function(dom){
@@ -700,4 +804,12 @@ battery:function(dom){
 			Blend.ui.layerInit(i,samples[i]);
 		}
 	});
+
+	//window注册登录成功回调
+	window.loginSuccessCallback = function(data){
+		alert("登录成功,5秒后回到登录界面");
+		setTimeout(function(){
+			Blend.mbaas.account.closeLoginDialog();
+		},5000);
+	}
 })();

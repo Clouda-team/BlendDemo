@@ -11,30 +11,36 @@
         <div class="navbar">
           <div class="navbar-inner">
             <div class="left sliding"><a href="#" class="back link"><i class="icon icon-back-blue"></i><span>后退</span></a></div>
-            <div class="center">人脸识别</div>
+            <div class="center">globalization demo</div>
             <div class="right"></div>
           </div>
         </div>
         <div class="page-content">
             <div class="screen">
-                <div class="center">
-                    <a id="register" class="button button-sm">人脸注册</a>
-                    <a id="face" class="button button-sm">人脸识别</a>
-                    <a id="blink" class="button button-sm">眨眼检测</a>                
-                </div>
+                <div class="title">国际化</div>
+                <ul class="list clearfix">
+                    <li>
+                        <div class="appspan2"> 本地语言：</div>
+                        <div id="locale" class="appspan4">无</div>
+                    </li>
+                    <li>
+                        <div class="appspan2">首选语言：</div>
+                        <div class="appspan4" id="language">无</div>
+                    </li>                        
+                </ul>
             </div>
+
+            
             <div class="screen none">
                 <div class="title clearfix">接口返回值</div>
-                <textarea class="full h120" name="" id="api">
-                    api get result here...
-                </textarea>
+                <textarea class="full h120" name="" id="api"> </textarea>
                 <div class="title clearfix">成功返回值</div>
                 <textarea class="half h120 fl br1" name="method">get</textarea>
                 <textarea class="half h120 fl" name="success">api get result here...</textarea>
             </div>
             <div class="next" role="button">
                 <span class="icon_down"> </span>
-            </div>                    
+            </div>      
         </div>
     </div>
 </div>
