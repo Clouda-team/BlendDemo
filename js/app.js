@@ -699,18 +699,20 @@
 			});			
 		},
 		layer:function(dom){
-			// newlayer
-			$("#newlayer",dom).click(function(){
-				new Blend.ui.Layer({
-					// id:"layer",
-					url:"samples/layer.html",
-					active:"true",
-				});
-				return false;
-			});
-		},
-		layergroup:function(dom){
-			var tabs = new Blend.ui.LayerGroup({
+            // newlayer
+            // $("#newlayer",dom).click(function(){
+            //  new Blend.ui.Layer({
+            //      // id:"layer",
+            //      url:"samples/layer.html",
+            //      active:"true",
+            //  });
+            //  return false;
+            // });
+
+            // registerEvent(dom,Blend.ui.get("layer"));
+        },
+        layergroup:function(dom){
+            var tabs = new Blend.ui.LayerGroup({
                 id: "tab",
                 layers: [{
                     id: 'group1',
@@ -719,9 +721,14 @@
                     'autoload': true,
                     "pullToRefresh":true,
                     "pullBgColor":"ff0000",
-                    "pullText":"下拉刷新",
-                    "loadingText":"更新中...",
-                    "releaseText":"释放更新"
+                    "ptrFn":function(){
+                        console.log("refresh1 callback");
+                        setTimeout(function(){
+                            
+                            Blend.ui.layerStopRefresh();
+
+                        },800);
+                    }
                 }, {
                     id: 'group2',
                     url: 'samples/group2.html',
@@ -730,7 +737,21 @@
                 }, {
                     id: 'group3',
                     url: 'samples/group3.html',
-                    'autoload': true
+                    'autoload': true,
+                    "pullToRefresh":true,
+                    "pullText":"下拉刷新：）",
+                    "loadingText":"更新中...",
+                    "releaseText":"释放更新^_^",
+                    "ptrFn":function(){
+                        console.log("refresh3 callback");
+                        setTimeout(function(){
+                            
+                            Blend.ui.layerStopRefresh();
+
+                        },500);
+                    }
+                    
+                
                 }],
                 onshow: function(event) {
                     var id = event['detail'];
@@ -742,16 +763,56 @@
                 left: 0,
                 top: 100
             });
-			$(".buttons-row a").on("touchend",function(e) {
+            $(".buttons-row a").on("touchend",function(e) {
                 // alert("in");
                 e.preventDefault();
                 tabs.active(this.id);
                 return false;
             });
-		},
-		slider:function(dom){
+            // $("a.back",dom).on("click",function(){
+            //     Blend.ui.get("layergroup").out();
+            //     return false;
+            // });
+            
+            // registerEvent(dom,Blend.ui.get("layergroup"));
+        },
+        slider:function(dom){
+            // var blend = Blend.ui;
+            // var mylayer = Blend.ui.get("Slider");
 
-		}
+            
+            var Slider = Blend.ui.Slider;
+            var images = [],slider;
+            $(".page-content img",dom).each(function(i, n) {
+                images.push({
+                    url: $(this).attr("src")
+                });
+            }).click(function(){
+                if (!slider) {
+                    slider = new Slider({
+                        "id": "test",
+                        "bgColor": "#cccccc",
+                        "images": images,
+                        hasIndicator: true,
+                        inactiveColor: "#888888",
+                        activeColor: "#ff0000",
+                        "tap": function(e) {
+                            slider.destroy();
+                            slider=undefined;
+                            // history.back();
+                        },
+                        'slide': function(e) {
+                            console.log(e.data.index)
+                        }
+                    });
+                } else {
+                    slider.in();
+                    // slider && slider.destroy();
+                }
+            });
+            // registerEvent(dom,Blend.ui.get("slider"));
+
+        }
 	}
 
 })(this);
