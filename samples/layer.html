@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <title>battery demo</title>
+    <title>Layer demo</title>
 </head>
 <body>
 <div class="pages">
@@ -11,33 +11,44 @@
         <div class="navbar">
           <div class="navbar-inner">
             <div class="left sliding"><a href="#" class="back link"><i class="icon icon-back-blue"></i><span>后退</span></a></div>
-            <div class="center">本地媒体</div>
+            <div class="center">Layer页面</div>
             <div class="right"></div>
           </div>
         </div>
         <div class="page-content">
             <div class="screen">
                 <div>
-                    <a id="take" class="button button-sm">拍照</a>
-                    <a id="recordvideo" class="button button-sm">录像</a>
-                    <a id="recordvoice" class="button button-sm">录音</a>
-                    <a id="photo" class="button button-sm">相册</a>
-                    <a id="video" class="button button-sm">视频</a>
-                    <a id="audio" class="button button-sm">音频</a>                    
-                </div>
-                <div class="center mt30">
-                    <img id="media" alt="媒体展示位" width="260" height="260"  src="img/icon/video.png"/>
+                    <div class="content-block-title">
+                        你能够进入这个页面说明layer 工作了，你只需要简单的调用此代码
+                    </div>
+                    <div class="content-block">
+                        <div class="content-block-inner">
+                            <code>
+                                new Blend.ui.Layer({
+                                    "id" : id,
+                                    "url" : this.href,
+                                    "active" :true
+                                });
+                            </code>
+                        </div>
+                    </div>
+                    
+                    <div class="content-block-title">
+                        当你想在下一个页面加载时候执行一些初始化方法，只需要
+                    </div>
+                    <div class="content-block">
+                        <div class="content-block-inner">
+                            <code>
+                                Blend.ui.layerInit(id,function(){//function here
+
+                                });
+                            </code>
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
-            <div class="screen none">
-                <div class="title clearfix">接口返回值</div>
-                <textarea class="full h120" name="" id="api">
-                    api get result here...
-                </textarea>
-                <div class="title clearfix">成功返回值</div>
-                <textarea class="half h120 fl br1" name="method">get</textarea>
-                <textarea class="half h120 fl" name="success">api get result here...</textarea>
-            </div>         
+                  
         </div>
     </div>
 </div>

@@ -534,16 +534,17 @@ battery:function(dom){
 			});			
 			registerEvent(dom,blend.ui.get("message"));
 		},
+		
 		layer:function(dom){
 			// newlayer
-			$("#newlayer",dom).click(function(){
-				new Blend.ui.Layer({
-					// id:"layer",
-					url:"samples/layer.html",
-					active:"true",
-				});
-				return false;
-			});
+			// $("#newlayer",dom).click(function(){
+			// 	new Blend.ui.Layer({
+			// 		// id:"layer",
+			// 		url:"samples/layer.html",
+			// 		active:"true",
+			// 	});
+			// 	return false;
+			// });
 
 			registerEvent(dom,blend.ui.get("layer"));
 		},
@@ -557,9 +558,14 @@ battery:function(dom){
                     'autoload': true,
                     "pullToRefresh":true,
                     "pullBgColor":"ff0000",
-                    "pullText":"下拉刷新",
-                    "loadingText":"更新中...",
-                    "releaseText":"释放更新"
+                    "ptrFn":function(){
+                        console.log("refresh1 callback");
+                        setTimeout(function(){
+                            
+                            Blend.ui.layerStopRefresh();
+
+                        },800);
+                    }
                 }, {
                     id: 'group2',
                     url: 'samples/group2.html',
@@ -568,7 +574,21 @@ battery:function(dom){
                 }, {
                     id: 'group3',
                     url: 'samples/group3.html',
-                    'autoload': true
+                    'autoload': true,
+                    "pullToRefresh":true,
+                    "pullText":"下拉刷新：）",
+                    "loadingText":"更新中...",
+                    "releaseText":"释放更新^_^",
+                    "ptrFn":function(){
+                        console.log("refresh3 callback");
+                        setTimeout(function(){
+                            
+                            Blend.ui.layerStopRefresh();
+
+                        },500);
+                    }
+                    
+                
                 }],
                 onshow: function(event) {
                     var id = event['detail'];
@@ -586,18 +606,18 @@ battery:function(dom){
                 tabs.active(this.id);
                 return false;
             });
+            // $("a.back",dom).on("click",function(){
+            //     Blend.ui.get("layergroup").out();
+            //     return false;
+            // });
 			
 			registerEvent(dom,blend.ui.get("layergroup"));
 		},
 		slider:function(dom){
 			// var blend = Blend.ui;
-			var mylayer = Blend.ui.get("Slider");
+			// var mylayer = Blend.ui.get("Slider");
 
-	        $("a.back",dom).click(function(){
-	            console.log("click.... back... out....")
-	            mylayer.out();
-	            return false;
-	        });
+	        
 	        var Slider = Blend.ui.Slider;
 	        var images = [],slider;
 	        $(".page-content img",dom).each(function(i, n) {
