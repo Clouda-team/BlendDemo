@@ -30,8 +30,16 @@
 	win.Sample = Sample;
 //注册全局事件
 	//Blend.ui.getLayerId()
+    console.log("in layer...");
 	$(document).on("click","a.back",function(){
-        Blend.ui.get(Blend.ui.getLayerId()).out();
+        console.log("in click back...");
+        if (Blend.ui.api){
+            Blend.ui.api.layer.back();
+        }else{
+            Blend.ui.get(Blend.ui.getLayerId()).out();
+        
+        }
+        
         return false;
     });
 
@@ -761,7 +769,7 @@
                 },
                 
                 left: 0,
-                top: 100
+                top: 150
             });
             $(".buttons-row a").on("touchend",function(e) {
                 // alert("in");
