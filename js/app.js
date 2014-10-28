@@ -30,16 +30,8 @@
 	win.Sample = Sample;
 //注册全局事件
 	//Blend.ui.getLayerId()
-    console.log("in layer...");
 	$(document).on("click","a.back",function(){
-        console.log("in click back...");
-        if (Blend.ui.api){
-            Blend.ui.api.layer.back();
-        }else{
-            Blend.ui.get(Blend.ui.getLayerId()).out();
-        
-        }
-        
+        Blend.ui.get(Blend.ui.getLayerId()).out();
         return false;
     });
 
@@ -480,7 +472,7 @@
 		},
 		compass:function(dom){
 			function rotate(deg,dom){
-				var rt = "rotate(" + deg + "deg)";
+				var rt = "rotate(" + parseInt(deg) + "deg)";
 				$('#pan',dom).css({
 					"transform": rt,
 					"-webkit-transform": rt,
@@ -563,7 +555,6 @@
 							$("#y",dom).text(data.y);
 							$("#z",dom).text(data.z);
 							$("#api",dom).val(JSON.stringify(data));
-							that.attr('disabled',false);
 						},
 						onfail: function(data){
 							$("#api",dom).val(JSON.stringify(data));
@@ -663,25 +654,46 @@
 			})		
 		},
 		message:function(dom){
+			//判断设备是否绑定
+			Blend.mbaas.push.isBind({
+				onsuccess:function(data){
+					Tips.show(dom,{text:'设备已经绑定'});
+				},
+				onfail:function(data){
+					Tips.show(dom,{text:'设备尚未绑定'});
+				}
+			});
+			var nonce = "asdfg";
+			var csrftoken = "asdfg0z3C9FN6LaQVB8uZGjHFCHdOFOp9IU1G";
+			var tag = 'test';
+			//var csrftoken = "e1d5e9b6927432d0d22346c9728a7285";
 			$("#unicast",dom).click(function(){
 				Blend.mbaas.push.registerUnicast({
 					onsuccess: function(data){
 						$("#api",dom).val(JSON.stringify(data));
+						Tips.show(dom,{text:'注册单播成功'});
 					},
 					onfail: function(data){
 						$("#api",dom).val(JSON.stringify(data));
-					}
+						Tips.show(dom,{text:'注册单播失败'});
+					},
+					nonce: nonce,
+					csrftoken: csrftoken
 				});
 			});
 			$("#multicast",dom).click(function(){
 				Blend.mbaas.push.registerMulticast({
-					tag: 'blendDemo',
 					onsuccess: function(data){
 						$("#api",dom).val(JSON.stringify(data));
+						Tips.show(dom,{text:'注册多播成功'});
 					},
 					onfail: function(data){
-						$("#api",dom).val(JSON.stringify(data));						
-					}
+						$("#api",dom).val(JSON.stringify(data));
+						Tips.show(dom,{text:'注册多播失败'});						
+					},
+					nonce: nonce,
+					csrftoken: csrftoken,
+					tag: tag		
 				});
 			});
 			$("#unregisterUnicast",dom).click(function(){
@@ -691,7 +703,9 @@
 					},
 					onfail: function(){
 						$("#api",dom).val(JSON.stringify(data));
-					}
+					},
+					nonce: nonce,
+					csrftoken: csrftoken
 				});
 			});
 			$("#unregisterMulticast",dom).click(function(){
@@ -702,7 +716,10 @@
 					},
 					onfail: function(){
 						
-					}
+					},
+					nonce: nonce,
+					csrftoken: csrftoken,
+					tag: tag
 				});
 			});			
 		},
@@ -769,7 +786,7 @@
                 },
                 
                 left: 0,
-                top: 150
+                top: 100
             });
             $(".buttons-row a").on("touchend",function(e) {
                 // alert("in");
@@ -847,7 +864,7 @@
 	"use strict";
 
 	Blend.lightInit({
-	    ak:"vm84NzKXo6SzFWj5xu7BsCia", //轻应用apikey，请参考《获取API Key》文档
+	    ak:"rmFAlyKRUEplCj7F2GFTM9kM", //轻应用apikey，请参考《获取API Key》文档
 	    module:[]
 	});
 

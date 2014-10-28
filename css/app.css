@@ -1,14 +1,9 @@
 * {
 	font-family:"Microsoft YaHei";
 }
-
+/* 通用类 */
 .clearfix{
 	clear:both;
-}
-
-.screen .center{
-	text-align: center;
-	margin-top: 10px;
 }
 
 .none{
@@ -23,14 +18,70 @@
 	margin-top: 100px;
 }
 
+.full{
+	display: block;
+	width: 98.666%;
+	border: none;
+}
+
+.half{
+	display: inline;
+	width: 48.33%;
+	border: none;
+}
+
+.br1{
+	border-right: solid 1px #bababa;
+}
+
+.fr{
+	float: right;
+}
+
+.fl{
+	float: left;
+}
+
+.h120{
+	height: 120px;
+}
+/* 布局类 */
+.appspan2{
+	width: 80px;
+}
+
+.appspan4{
+	width: 160px;
+}
+
+[class*="appspan"]{
+	float: left;
+	margin-left: 20px;
+}
+/* 自定义页面类 */
+.screen{
+	position: absolute;
+	top: 44px;
+	width: 100%;
+	margin: auto;
+	-webkit-transition: all .7s ease;
+	overflow-x: hidden;
+}
+
+.screen .center{
+	text-align: center;
+}
+/* 按钮类 */
 .button{
 	display: inline-block;
 	background-color: #479be1;
-	height: 68px;
-	line-height: 68px;
+	height: 58px;
 	text-align: center;
 	vertical-align: middle;
+	font-size: 18px;
+	line-height: 58px;	
 	color:#ffffff;
+	margin: 5px 2px 5px 2px;
 }
 
 .button.button-white{
@@ -39,11 +90,11 @@
 }
 
 .button.button-ms{
-	width: 24%;
+	width: 22%;
 }
 
 .button.button-sm{
-	width: 29%;
+	width: 28%;
 }
 
 .button.button-xs{
@@ -54,49 +105,7 @@
 	width: 96%;
 }
 
-.screen{
-	position: relative;
-	top: 43px;
-	width: 100%;
-	margin: auto;
-	height: 88%;
-	-webkit-transition: all .7s ease;
-}
-
-textarea{
-	font-size: 18px;
-	color:#bababa;
-}
-
-.full{
-	display: block;
-	width: 98.666%;
-	border: none;
-}
-.half{
-	display: inline;
-	width: 48.33%;
-	border: none;
-}
-.br1{
-	border-right: solid 1px #bababa;
-}
-.fr{
-	float: right;
-}
-.fl{
-	float: left;
-}
-.h120{
-	height: 120px;
-}
-
-.device{
-	background-color: #fff;
-	border: solid 1px gray;
-	text-indent: 20px;
-}
-
+/* 首页宫格类 */
 .grid{
 	float: left;
   	width: 33.332%;
@@ -127,34 +136,7 @@ textarea{
   	vertical-align: middle;
 }
 
-.appspan2{
-	width: 80px;
-}
-
-.appspan4{
-	width: 160px;
-}
-
-[class*="appspan"]{
-	float: left;
-	margin-left: 20px;
-}
-
-.title{
-	padding: 14px;
-	background-color: #eaeaea;
-	border: #dcdcdc solid 1px;
-	color: #777777;
-	height: 20px;
-	font-size: 18px;
-}
-
-.desc{
-	margin-top: 8px;
-	color:#333333;
-	font-size: 18px;
-}
-
+/* 首页icon类 */
 .icon_home {
 	display: inline-block;
 	width: 44px;
@@ -257,8 +239,41 @@ textarea{
 .icon_slider{
 	background-position: -88px -264px;
 }
+/* 二级页面 */
+.title{
+	padding: 14px;
+	background-color: #eaeaea;
+	border: #dcdcdc solid 1px;
+	color: #777777;
+	height: 20px;
+	font-size: 18px;
+}
 
-/*下一屏button*/
+.desc{
+	margin-top: 8px;
+	color:#333333;
+	font-size: 18px;
+}
+
+
+textarea{
+	font-size: 18px;
+	color:#bababa;
+}
+
+	/*接口返回值框*/
+.result textarea{
+	width: 100%;
+	height: 80px;
+}
+
+.device{
+	background-color: #fff;
+	border: solid 1px gray;
+	text-indent: 20px;
+}
+
+	/*下一屏button*/
 .next{
 	position: absolute;
 	width: 100%;
@@ -288,7 +303,7 @@ textarea{
 	transform:rotate(180deg);
 }
 
-/*电量*/
+	/*电量*/
 #batterybox{
 	position: relative;
 	width: 238px;
@@ -353,12 +368,6 @@ textarea{
   font-size: .5em;
 }
 
-/*接口返回值框*/
-.result textarea{
-	width: 100%;
-	height: 80px;
-}
-
 /*网络相关*/
 .network{
 	display: inline-block;
@@ -414,7 +423,7 @@ textarea{
 	background-position: -272px -658px;
 }
 
-/*加速器*/
+	/*加速器*/
 ul.list{
 	display:table;
 	list-style-type:none;
@@ -429,7 +438,7 @@ ul.list{
 	height: 1px;
 	border-bottom: solid 1px gray;
 }
-/*指南针*/
+	/*指南针*/
 .box{
 	position: relative;
 	width: 260px;
@@ -442,6 +451,10 @@ ul.list{
 	width: 260px;
 	height: 260px;
 	background-image: url(../img/icon/pan.png);
+	-webkit-transtion: transform .5s ease-out;
+	-moz-transtion: transform .5s ease-out;
+	-o-transtion: transform .5s ease-out;
+	transition:transform .5s ease-out;
 }
 
 .pointer{
@@ -454,7 +467,7 @@ ul.list{
 	background-image: url(../img/icon/pointer.png);
 }
 
-/*文件上传*/
+	/*文件上传*/
 .upload-file,.file_box {
 
    display: inline-block;
@@ -487,7 +500,7 @@ ul.list{
 
 }
 
-/*进度类*/
+	/*进度类*/
 .progress{
 	position: relative;
 	border-radius: 5px;
@@ -515,7 +528,7 @@ ul.list{
 	width: 100%;
 }
 
-/*页面tips*/
+	/*页面tips*/
 .tips{
 	position: absolute;
 	background-color: #000;
@@ -544,7 +557,7 @@ ul.list{
 	opacity:0.1; /*其他，透明度50%*/
 }
 
-/*联系人*/
+	/*联系人*/
 ul.contact{
 	list-style-type: none;
 	padding: 0;
