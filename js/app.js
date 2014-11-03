@@ -32,6 +32,9 @@
 	//Blend.ui.getLayerId()
 	$(document).on("click","a.back",function(){
         Blend.ui.get(Blend.ui.getLayerId()).out();
+        if(Blend.ui.getLayerId() === "battery"){
+        	Blend.device.battery.stopListen();
+        }
         return false;
     });
 
@@ -80,8 +83,7 @@
 	            level.css("height",3.54 * val + "px");
 	            value.text(val);
 	        }
-
-	        Blend.device.battery.get({
+	        var options = {
 	            onsuccess:function(data){
 	                $("#api",dom).val(JSON.stringify(data));
 	                var val = data.level;
@@ -91,8 +93,8 @@
 	            onfail:function(errno){
 	                $("#api",dom).val(JSON.stringify(errno));
 	            }
-	        });
-	        var mylayer = Blend.ui.get("battery");
+	        };
+	        Blend.device.battery.startListen(options);
 		},
 		network:function(dom){
 				var success = function(data){
