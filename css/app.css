@@ -275,7 +275,7 @@ textarea{
 
 	/*下一屏button*/
 .next{
-	position: absolute;
+	position: fixed;
 	width: 100%;
 	height: 30px;
 	line-height: 30px;
