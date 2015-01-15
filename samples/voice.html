@@ -19,12 +19,12 @@
         </div>
         <div class="page-content">
             <div class="screen">
-                <div class="center">
+                <div style="padding:0 30px 0 30px;">
                     <h2>VTT</h2>
-                    <a id="voice" class="button button-lg">打开语音识别窗口</a>
+                    <div class="center"><a id="voice" class="button button-lg">打开语音识别窗口</a></div>
                     <h2>TTS</h2>
                 </div>
-                <textarea class="full h120" name="" id="word" cols="30" rows="10"></textarea>
+                <textarea class="full" name="" id="word" rows="5"></textarea>
                 <div class="center mt30">
                     <a id="zh" class="button button-xs">中文语音</a>
                     <a id="en" class="button button-xs">英文语音</a>
@@ -32,12 +32,9 @@
             </div>
             <div class="screen none">
                 <div class="title clearfix">接口返回值</div>
-                <textarea class="full h120" name="" id="api">
+                <textarea class="full h120" name="" id="api" readonly="true">
                     api get result here...
                 </textarea>
-                <div class="title clearfix">成功返回值</div>
-                <textarea class="half h120 fl br1" name="method">get</textarea>
-                <textarea class="half h120 fl" name="success">api get result here...</textarea>
             </div>
             <div class="next" role="button">
                 <span class="icon_down"> </span>

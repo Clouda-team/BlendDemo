@@ -1,0 +1,313 @@
+<!Doctype html>
+<html xmlns=http://www.w3.org/1999/xhtml>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, user-scalable=no , initial-scale=1.0">
+  <style>img { min-width: 100px; min-height: 100px; border: 1px solid grey; }</style>
+  <title>clouda开放api测试页面</title>
+  <!--<script name="baidu-tc-cerfication" type="text/javascript" charset="utf-8" src="http://apps.bdimg.com/cloudaapi/lightapp.js"></script>-->
+  <!---->
+ 
+  <script name="baidu-tc-cerfication" type="text/javascript" charset="utf-8" src="http://cq01-rdqa-dev046.cq01.baidu.com:8010/clouda3/static/cloudaapi/lightapp_my.js"></script>
+
+<!-- <script name="baidu-tc-cerfication" type="text/javascript" charset="utf-8" src="http://apps.bdimg.com/cloudaapi/lightapp.js"></script> -->
+  <script type="text/javascript">
+	clouda.lightInit({
+		ak:"I58ECFzaGKYyy2LR3sHB2pis",
+		module:["battery","connection","push","activity","geolocation","fs","globalization","media","qr","device","orientation"]
+	});
+	function successCallback(data){
+		document.getElementById("success").innerText = JSON.stringify(data);
+	}
+
+	function failCallback(data){
+		document.getElementById("failure").innerText = JSON.stringify(data);
+	}
+	
+	function statusInfo(status) {
+      document.getElementById('status').innerText = status;
+   }
+
+	function getUniqueId(){
+		var options = {
+			onsuccess:successCallback,
+			onfail:failCallback
+		};
+		clouda.mbaas.push.getUniqueId(options);
+	}
+
+	function isBind(){
+		var options = {
+			onsuccess:successCallback,
+			onfail:failCallback
+		};
+		clouda.mbaas.push.isBind(options);
+	}
+
+
+	function registerUnicast(){
+		var options = {
+			onsuccess:successCallback,
+			onfail:failCallback
+		};
+		options.nonce = "asdfg";
+		options.csrftoken = "asdfg0z3C9FN6LaQVB8uZGjHFCHdOFOp9IU1G";
+		options.csrftoken = "19fdbdc498c1ff6ada08287a23c847a4";
+		clouda.mbaas.push.registerUnicast(options);
+	}
+	
+	function unregisterUnicast(){
+		var options = {
+			onsuccess:successCallback,
+			onfail:failCallback
+		};
+		options.nonce = "asdfg";
+		options.csrftoken = "asdfg0z3C9FN6LaQVB8uZGjHFCHdOFOp9IU1G";
+		options.csrftoken = "19fdbdc498c1ff6ada08287a23c847a4";
+		clouda.mbaas.push.unregisterUnicast(options);
+	}
+	
+	function registerMulticast(){
+		var options = {
+			onsuccess:successCallback,
+			onfail:failCallback
+		};
+		options.nonce = "asdfg";
+		options.csrftoken = "asdfg0z3C9FN6LaQVB8uZGjHFCHdOFOp9IU1G";
+		options.csrftoken = "19fdbdc498c1ff6ada08287a23c847a4";
+		options.tag = "test";
+		clouda.mbaas.push.registerMulticast(options);
+	}
+	
+	function unregisterMulticast(){
+		var options = {
+			onsuccess:successCallback,
+			onfail:failCallback
+		};
+		options.nonce = "asdfg";
+		options.tag = "test";
+		options.csrftoken = "asdfg0z3C9FN6LaQVB8uZGjHFCHdOFOp9IU1G";
+		options.csrftoken = "19fdbdc498c1ff6ada08287a23c847a4";
+		clouda.mbaas.push.unregisterMulticast(options);
+	}
+	
+	function checkSupport(){
+		clouda.mbaas.push.checkSupport(function(data){
+			alert(JSON.stringify(data));
+		});
+	}
+	
+	function setupCalender() {
+		var intent = {
+			action: "android.intent.action.EDIT",
+			type: "vnd.android.cursor.item/event",
+			title: "Some title",
+			description: "Some description",
+			beginTime: 1384676947757,
+			endTime: 1384680547757
+		};
+		clouda.device.activity.start({onsuccess:successCallback,onfail:failCallback,intent:intent});    
+	}
+	
+	function getBattery() {
+		clouda.device.battery.get({onsuccess:successCallback,onfail:failCallback});
+	}
+
+	function startListenBattery() {
+		clouda.device.battery.startListen({onsuccess:successCallback,onfail:failCallback});
+	}
+
+	function stopListenBattery() {
+		clouda.device.battery.stopListen({onsuccess:successCallback,onfail:failCallback});
+	}
+	
+	function getNetworkInfo(){
+        var options = {onsuccess:successCallback, onfail:failCallback};
+        clouda.device.connection.get(options);
+    }
+	function getImei(){
+        var options = {onsuccess:successCallback, onfail:failCallback};
+        clouda.device.device.getImei(options);
+    }
+	function getSysVersion(){
+        clouda.device.device.getSysVersion({
+            onsuccess:successCallback, onfail:failCallback
+        });
+    }
+    function getScreenSize(){
+        clouda.device.device.getScreenSize({
+            onsuccess:successCallback, onfail:failCallback
+        });
+    }
+    function getDeviceModelName(){
+        clouda.device.device.getDeviceModelName({
+            onsuccess:successCallback, onfail:failCallback
+        });
+    }
+	function postfile(){
+      var target = 'http://bcs.duapp.com/cloudaapi/123.mp3';
+      
+      var uploadKey = "1111";
+      var options = {onsuccess:successCallback, onfail:failCallback, uploadKey:uploadKey};
+      clouda.device.fs.post(recordPath, target, options);
+    }
+	
+	function getLocationInfo(){
+        clouda.device.geolocation.get({onsuccess:successCallback,onfail:failCallback,maximumAge: 3000, timeout: 45000,method:clouda.device.LOCATION_METHOD.BASE_STATION});
+    }
+	
+	function listenLocationInfo(){
+		  clouda.device.geolocation.startListen({onsuccess:successCallback,onfail:failCallback});
+	}
+	function stopListenLocationInfo(){
+		  clouda.device.geolocation.stopListen({onsuccess:successCallback,onfail:failCallback});
+	}
+	function getGlobalizationInfo() {
+		clouda.device.globalization.getlocale({onsuccess:successCallback,onfail:failCallback});
+	}
+	function scanQrcode(){
+        clouda.device.qr.startCapture({type:clouda.device.QR_TYPE.QRCODE,onsuccess:successCallback,onfail:failCallback});
+    }
+	function getPic() {
+      clouda.device.media.captureMedia({onsuccess:successCallback,onfail:failCallback,
+                                        mediaType:clouda.device.MEDIA_TYPE.IMAGE,
+                                        source:clouda.device.MEDIA_SOURCE.CAMERA,
+                                        format:clouda.device.MEDIA_FORMAT.FILE});
+    }
+    
+    function getVideo() {
+      clouda.device.media.captureMedia({onsuccess:successCallback,onfail:failCallback,
+                                        mediaType:clouda.device.MEDIA_TYPE.VIDEO,
+                                        duration:10,
+                                        format:clouda.device.MEDIA_FORMAT.FILE});
+    }
+    
+    function choosePic() {
+      clouda.device.media.captureMedia({onsuccess:successCallback,onfail:failCallback,
+                                        mediaType:clouda.device.MEDIA_TYPE.IMAGE,
+                                        source:clouda.device.MEDIA_SOURCE.ALBUM,
+                                        limit:1,
+                                        format:clouda.device.MEDIA_FORMAT.FILE});
+    }
+    
+    function takeVideo(){
+        clouda.device.media.captureMedia({onsuccess:successCallback,onfail:failCallback,
+                                        mediaType:clouda.device.MEDIA_TYPE.VIDEO,
+                                        source:clouda.device.MEDIA_SOURCE.ALBUM,
+                                        limit:1,
+                                        format:clouda.device.MEDIA_FORMAT.FILE});
+    }
+	var recordPath = "/sdcard/record.wav";
+	function startRecording() {
+	  clouda.device.media.operateMedia(recordPath,"startRecord",{onsuccess:successCallback,onfail:failCallback});
+   }
+   function stopRecording() {
+	 clouda.device.media.operateMedia(recordPath,"stopRecord",{onsuccess:successCallback,onfail:failCallback});
+   }
+   function playRecording() {
+     clouda.device.media.operateMedia(recordPath,"play",{onsuccess:successCallback,onfail:failCallback});
+   }
+   function setPortrait(){
+	clouda.device.orientation.setOrientation({portrait:1});
+   }
+   function setLandscape(){
+	clouda.device.orientation.setOrientation({portrait:0});
+   }
+  </script>
+
+</head>
+
+<body>
+成功信息:<span id="success"></span>
+<br>
+失败信息:<span id="failure"></span>
+<br>
+进度信息:<span id="status"></span>
+<H2>Runtime插件支持的接口: </H2>
+<button onclick="setupCalender();">start Activity</button>
+<br>
+<br>
+<button onclick="getBattery();">get battery</button>
+<br>
+<br>
+<button onclick="startListenBattery();">listen battery</button>
+<br>
+<br>
+<button onclick="stopListenBattery();">stop listen battery</button>
+<br>
+<br>
+<button onclick="getNetworkInfo();">getNetworkInfo</button>
+<br>
+<br>
+<button onclick="getImei();">getImei</button>
+<br>
+<br>
+<button onclick="getSysVersion();">getSysVersion</button>
+<br>
+<br>
+<button onclick="getDeviceModelName();">getDeviceModelName</button>
+<br>
+<br>
+<button onclick="getScreenSize();">getScreenSize</button>
+<br>
+<br>
+<button onclick="postfile();">post file(请先录音)</button>
+<br>
+<br>
+<button onclick="getLocationInfo();">LocationInfo</button>
+<br>
+<br>
+<button onclick="listenLocationInfo();">listen location</button>
+<br>
+<br>
+<button onclick="stopListenLocationInfo();">stop listen location</button>
+<br>
+<br>
+<button onclick="getGlobalizationInfo();">get globalization</button>
+<br>
+<br>
+<button onclick="getPic()">Get Picture</button>
+<button onclick="choosePic()">choose pic</button>
+<br />
+<button onclick="getVideo()">Get video</button>
+<button onclick="takeVideo();">choose Video</button> <br />
+<button onclick="startRecording();">StartRecording</button>
+<button onclick="stopRecording();">StopRecording</button>
+<button onclick="playRecording();">playRecording</button>
+<br>
+<br>
+<button onclick="scanQrcode();">scan qrcode</button>
+<br>
+<br>
+<H2>Runtime框架支持的接口</H2>
+<button onclick="setPortrait();">setPortrait</button>
+<br>
+<br>
+<button onclick="setLandscape();">setLandscape</button>
+<br>
+<br>
+<H2>框和H5支持的接口</H2>
+<H3>Push: </H3>
+<button onclick="checkSupport();">checkSupport</button>
+<br/>
+<br>
+<button onclick="getUniqueId();">getUniqueId</button>
+<br/>
+<br>
+<button onclick="isBind();">isBind</button>
+<br/>
+<br>
+<button onclick="registerUnicast();">registerUnicast</button>
+<br/>
+<br>
+<button onclick="unregisterUnicast();">unregisterUnicast</button>
+<br/>
+<br>
+<button onclick="registerMulticast();">registerMulticast</button>
+<br/>
+<br>
+<button onclick="unregisterMulticast();">unregisterMulticast</button>
+<br/>
+</body>
+
+</html>

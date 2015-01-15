@@ -9,13 +9,19 @@
 
 	}
 
-
+//国测局坐标转换为百度地图坐标
+	function gcjToBd(lng,lat){
+		var PI = 3.14159265358979324*3000.0/180.0;
+		var x = lng, y=lat;
+		var z = Math.sqrt(x*x+y*y) + 0.00002*Math.sin(y*PI);
+		var theta = Math.atan2(y,x) + 0.000003*Math.cos(x*PI);
+		return {
+			lng:z*Math.cos(theta) + 0.0065,
+			lat: z*Math.sin(theta) + 0.006
+		};
+	}
 //提示浮层方法
-	var Tips = function(){
-
-	}	
-
-	Tips = {
+	var Tips = {
 		_template: function(text){
 			return $('<div class="tips">'+text+'</div>');
 		},
@@ -27,18 +33,36 @@
 		}
 	}
 
+//根据Blend.RUNTIME环境去除TitleBar 返回按钮
+	if(Blend.RUNTIME !=2 ){
+		$("a.back").show();
+	}
 	win.Sample = Sample;
 //注册全局事件
 	//Blend.ui.getLayerId()
 	$(document).on("click","a.back",function(){
         Blend.ui.get(Blend.ui.getLayerId()).out();
+        //Blend.ui.layerBack();
         if(Blend.ui.getLayerId() === "battery"){
         	Blend.device.battery.stopListen();
+        }
+
+        if(Blend.ui.getLayerId() === "explorer"){
+        	Blend.device.fs.abort({
+        		onsuccess:function(data){
+        			Tips.show(dom,{text:"成功"});
+        		},
+        		onfail:function(data){
+        			Tips.show(dom,{text:"失败"});
+        		}	
+        	})
+        	$("#load").css({width:0});
+        	$("#loadval").text('');
         }
         return false;
     });
 
-	$(document).on("touchend",".icon_down",function(){
+	$(document).on("click",".icon_down",function(){
 		var screens = $(this).closest(".page-content").find('.screen');
 		if($(this).hasClass('reverse')){
 			screens.eq(0).show();
@@ -65,8 +89,7 @@
     	if($(this).hasClass('grid_hover')){
     		$(this).removeClass('grid_hover');
     	}
-    });     
-
+    });  
 	Sample.prototype = {
 		battery:function(dom){
 	        var showLevel = function(val){
@@ -129,77 +152,106 @@
 					}
 				var fail = function(data){
 		                $("#api",dom).val(JSON.stringify(data));
-					}			
-			$("#status",dom).click(function(event){
-				event.preventDefault();
+					}	
+
 				Blend.device.connection.get({
 					onsuccess: success,
 					onfail: fail
 				});
-			});
-			$("#start",dom).click(function(event){
-				event.preventDefault();
-				if($(this).hasClass("button-white")){
-					Blend.device.connection.stopListen();
-					$(this).removeClass('button-white').text('开始监听');
-				}else{
-					Blend.device.connection.startListen({
+
+				$("#status",dom).click(function(event){
+					event.preventDefault();
+					Blend.device.connection.get({
 						onsuccess: success,
 						onfail: fail
 					});
-					$(this).addClass('button-white').text('停止监听');
-				}
-			});			
+				});
+				$("#start",dom).click(function(event){
+					event.preventDefault();
+					if($(this).hasClass("button-white")){
+						Blend.device.connection.stopListen();
+						$(this).removeClass('button-white').text('开始监听');
+					}else{
+						Blend.device.connection.startListen({
+							onsuccess: success,
+							onfail: fail
+						});
+						$(this).addClass('button-white').text('停止监听');
+					}
+				});			
 		},
 		media:function(dom){
 
-			var result;
+			var audio;
+			var video;
 
-			$("#video").click(function(event){
-				var link = result.fullPath ? result.fullPath : '';
-				Blend.mbaas.mediaplayer.play(link,{
-					onsuccess:function(data){
-						$("#api",dom).val(JSON.stringify(data));
-					},
-					onfail: function(data){
-						$("#api",dom).val(JSON.stringify(data));
+			$("#recordvideo").click(function(){
+				if($(this).hasClass("button-white")){
+					var link = video.fullPath ? video.fullPath : null;
+					if(!link){
+						Tips.show(dom,{text:"无效的视频"});
+						return ;
 					}
-				});
-			});
-
-			$("#audio").click(function(){
-				var link = result.fullPath ? result.fullPath : '';
-				Blend.device.media.operateMedia(link, 'play', {
-					onsuccess:function(){
-						$("#api",dom).val(JSON.stringify(data));
-					},
-					onfail:function(){
-						$("#api",dom).val(JSON.stringify(data));
-					}
-				})
-			});
-
-			$("#recordvideo,#recordaudio").click(function(){
-				var mediaType = '';
-				if($(this).attr('id') === 'recordvideo'){
-					mediaType = Blend.device.MEDIA_TYPE.VIDEO;					
+					Blend.mbaas.mediaplayer.play(link,{
+						onsuccess:function(data){
+							$("#api",dom).val(JSON.stringify(data));
+							$("#recordvideo").text("录像").removeClass("button-white");
+						},
+						onfail: function(data){
+							$("#api",dom).val(JSON.stringify(data));
+							$("#recordvideo").text("录像").removeClass("button-white");
+						}
+					});
 				}else{
-					mediaType = Blend.device.MEDIA_TYPE.AUDIO;
-				}
-									
-				Blend.device.media.captureMedia({
-					onsuccess: function(data){
-						result = data;
-						$("#api",dom).val(JSON.stringify(data));
-					},
-					onfail: function(data){
-						$("#api",dom).val(JSON.stringify(data));
-					},
-					mediaType: mediaType,
-					source: 0,
-					quality: 80
-				});
+					Blend.device.media.captureMedia({
+						onsuccess: function(data){
+							video = data;
+							$("#api",dom).val(JSON.stringify(data));
+							$("#recordvideo").text("播放").addClass("button-white");
+						},
+						onfail: function(data){
+							$("#api",dom).val(JSON.stringify(data));
+						},
+						mediaType: Blend.device.MEDIA_TYPE.VIDEO,
+						source: 0,
+						quality: 80
+					});
+				}			
 			});
+
+			$("#recordaudio").click(function(){				
+				if($(this).hasClass("button-white")){
+					var link = audio.fullPath ? audio.fullPath : null;
+					if(!link){
+						Tips.show(dom,{text:"无效的音频"});
+						return ;
+					}
+					Blend.device.media.operateMedia(link, 'play', {
+						onsuccess:function(data){
+							$("#api",dom).val(JSON.stringify(data));
+							$("#recordaudio").text("录音").removeClass("button-white");
+						},
+						onfail:function(data){
+							$("#api",dom).val(JSON.stringify(data));
+							$("#recordaudio").text("录音").removeClass("button-white");
+						}
+					});
+				}else{								
+					Blend.device.media.captureMedia({
+						onsuccess: function(data){
+							audio = data;
+							$("#api",dom).val(JSON.stringify(data));
+							$("#recordaudio").text("播放").addClass("button-white");
+						},
+						onfail: function(data){
+							$("#api",dom).val(JSON.stringify(data));
+						},
+						mediaType: Blend.device.MEDIA_TYPE.AUDIO,
+						source: 0,
+						quality: 80
+					});
+				}
+			});			
 		},
 		camera:function(dom){
 			$("#imageurl",dom).click(function(){
@@ -211,7 +263,7 @@
 					onfail: function(data){
 						$("#api",dom).val(JSON.stringify(data));
 					},
-					mediaType: Blend.device.MEDIA_TYPE.IMAGE,
+					mediaType: Blend.device.MEDIA_TYPE.PICTURE,
 					source: 0,
 					base64: true,
 					quality: 90,
@@ -223,7 +275,11 @@
 				Blend.device.media.captureMedia({
 					onsuccess:function(data){
 						$("#api",dom).val(JSON.stringify(data));
-						$("#media",dom).attr({src:"data:"+data.type+";base64,"+data.base64});
+						if(data.type.split("/")[0].toLowerCase() === "image"){
+							$("#media",dom).attr({src:"data:image/jpg;base64,"+data.base64});
+						}else{
+							Tips.show(dom,{text:'非图片文件无法显示'});
+						}
 					},
 					onfail: function(data){
 						$("#api",dom).val(JSON.stringify(data));
@@ -249,7 +305,7 @@
 				}
 			});
 
-/*			Blend.device.globalization.getPreferredLanguage({
+			Blend.device.globalization.getPreferredLanguage({
 				onsuccess: function(data){
 					$("#api",dom).append(JSON.stringify(data));
 					$("#language").text(data);
@@ -257,30 +313,30 @@
 				onfail: function(data){
 					$("#api",dom).append(JSON.stringify(data));
 				}
-			});	*/		
+			});
 		},
 		intent:function(dom){
-			var intent = {
-
-		    };
+			var intent;
 
 		    var intent_baidumap = {
 		        action: "android.intent.action.VIEW",
-		        uri: "geo:38.899533,-77.036476"    	
-		    }
-
+		        uri: "geo:39.922840,116.3543240,北京市西城区阜外大街2号万通大厦"    	
+		    };
 
 		    var intent_baidubrowser = {
 		        action: "android.intent.action.VIEW",
 		        uri: "http://www.cloudajs.org/",
 		        calss: ['com.android.browser','com.android.Browser.BrowserActivity']	
-		    }
+		    };
 
-		    var intent_player = {
-		        action: "android.intent.action.VIEW",
-		        uri: "http://bcs.duapp.com/jaketestbucket/BaiduXCloud%20v03.mp4?sign=MBO:B3cd3aed3bca93d78135c99c2ab8b5ce:3rCc42yqHZu6lOn7uuucEMSQzI8%3D",
-		        type: "video/*"		    	
-		    }
+		    var intent_cal  =  {
+		        action: "android.intent.action.EDIT",
+		        type: "vnd.android.cursor.item/event",
+		        title: "Some title",
+		        description: "Some description",
+		        beginTime: 1384676947757,
+		        endTime: 1384680547757
+		    };
 
 		    $("#baidumap, #baidubrowser, #videoplayer",dom).click(function(){
 			    if($(this).attr('id') === 'baidumap'){
@@ -288,14 +344,16 @@
 			    } else if($(this).attr('id') === 'baidubrowser'){
 			    	intent = intent_baidubrowser;
 			    }else{
-			    	intent = intent_player
+			    	intent = intent_cal
 			    }
 			    Blend.device.activity.start({
 			    	onsuccess: function(data){
 			    		$("#api",dom).val(JSON.stringify(data));
+			    		Tips.show(dom,{text:"调用成功"})
 			    	},
 			    	onfail: function(data){
 			    		$("#api",dom).val(JSON.stringify(data));
+			    		Tips.show(dom,{text:"调用失败"})
 			    	},
 			    	intent:intent
 			    });
@@ -307,7 +365,7 @@
 					$("#info",dom).val(JSON.stringify(data));
 				},
 				onfail: function(data){
-					$("#api",dom).val(JSON.stringify(data));
+					$("#info",dom).val(JSON.stringify(data));
 				}			
 			}
 			$("#imei",dom).click(function(){
@@ -324,35 +382,49 @@
 			});						
 		},
 		explorer:function(dom){
+			$("#load",dom).css({width:0});
 			$("#upload",dom).click(function(){
-				$("#load").css({width:0});
-				$("#loadval").text("0%");
-				Blend.device.media.captureMedia({
+
+				$(this).attr({disabled:true});
+				$("#load",dom).css({width:0});
+				$("#loadval").text('');
+				//文件上传调用参数
+				var target = 'http://bcs.duapp.com/cloudaapi/filetest';
+				var options = {
 					onsuccess:function(data){
-						var target = 'http://bcs.duapp.com/cloudaapi/filetest';
-						var options = {
-							onsuccess:function(data){
-								$("#api",dom).val(JSON.stringify(data));
-							},
-							onfail: function(data){
-								$("#api",dom).val(JSON.stringify(data));
-							},
-							onprogress: function(data){
-								var width = Math.ceil((data.loaded/data.total)*100)+'%';
-								$("#load").css({width:width});
-								if(width === '100%'){
-									$("#loadval").text('上传成功');
-									Tips.show(dom,{text:"上传成功"});
-								}else{
-									$("#loadval").text(width);
-								}
-							},
-							uploadKey: "1111"
+						$("#api",dom).val(JSON.stringify(data));
+						if(data.responseCode == 200){
+							$("#loadval").text('上传成功');
+							$("#load").css({width:"100%"});
 						}
-						Blend.device.fs.post(data.fullPath, target, options);
 					},
 					onfail: function(data){
 						$("#api",dom).val(JSON.stringify(data));
+					},
+					onprogress: function(data){
+						var width = Math.ceil((data.loaded/data.total)*100)+'%';
+						$("#load").css({width:width});
+						if(data.loaded == data.total){
+							$("#loadval").text('上传成功');
+							Tips.show(dom,{text:"上传成功"});
+						}else{
+							$("#loadval").text(width);
+						}
+						$("#api",dom).val(JSON.stringify(data));
+					},
+					uploadKey: "1111"
+				}
+				Blend.device.media.captureMedia({
+					onsuccess:function(data){
+						$("#filename",dom).text(data.name);
+						$("#filesize",dom).text(data.size);
+						Blend.device.fs.post(data.fullPath, target, options);
+						$("#upload",dom).removeAttr("disabled");
+					},
+					onfail: function(data){
+						Blend.device.fs.post(data.fullPath, target, options);
+						$("#api",dom).val(JSON.stringify(data));
+						$("#upload",dom).removeAttr("disabled");
 					},
 					mediaType: Blend.device.MEDIA_TYPE.IMAGE,
 					source: 1,
@@ -361,7 +433,7 @@
 					width: 260,
 					height: 280
 				});	
-			})
+			});
 		},
 		qrcode:function(dom){
 			$("#qrcode,#barcode").click(function(){
@@ -384,25 +456,27 @@
 		position:function(dom){
 			var options = {
 				onsuccess: function(data){
+					console.log('terry'+data);
+					$("#api",dom).val(JSON.stringify(data));
 					// 百度地图API功能
-					var map = new BMap.Map("allmap");
-					map.centerAndZoom(new BMap.Point(data.longitude, data.latitude), 20); 
-					map.enableScrollWheelZoom(true);
-
-					//坐标转换完之后的回调函数
-					translateCallback = function (point){
-						map.clearOverlays(); 
-						var marker = new BMap.Marker(point);
-						map.addOverlay(marker);
-						map.panTo(point); 
-						map.setCenter(point);
-					}
-					BMap.Convertor.translate(gpsPoint,0,translateCallback);     //真实经纬度转成百度坐标				
+					if(parseFloat(data.longitude) >= 180 || parseFloat(data.longitude) <=-180){
+						Tips.show(dom,{text:"无法获取位置信息"});
+					}else{
+						var map = new BMap.Map("allmap");
+						if(data.coordtype.indexOf("gcj02") !== -1){
+							var bd_cord = gcjToBd(data.longitude, data.latitude);
+							map.centerAndZoom(new BMap.Point(bd_cord.lng,bd_cord.lat), 20); 
+						}else{
+							map.centerAndZoom(new BMap.Point(data.longitude, data.latitude), 20); 
+						}
+						map.enableScrollWheelZoom(true);
+					}				
 				},
 				onfail: function(data){
+					console.error('terry'+data);
 					$("#api",dom).val(JSON.stringify(data));
 				}			
-			}
+			};
 			Blend.device.geolocation.get(options);
 		},
 		contact:function(dom){
@@ -412,12 +486,18 @@
 				onsuccess: function(data){
 					var html = [];
 					var temp = '';
-					for(var i in data){
-						if(data && data[i] && data[i].displayName&&data[i].phoneNumbers && data[i].phoneNumbers[0]){
-							temp = '<li><p>'+data[i].displayName+'</p><p>'+data[i].phoneNumbers[0].value+'</p></li><li class="split"></li>';
+					if(typeof data === "object" && data.length >= 1){
+						for(var i in data){
+							name = data[i].displayName || '未知';
+							if(name == '未知'){
+								continue;
+							}
+							phone = (data[i].phoneNumbers && data[i].phoneNumbers[0].value) || '未知';
+							temp = '<li><p>'+name+'</p><p>'+phone+'</p></li><li class="split"></li>';
 							html.push(temp);
-						}
+						}				
 					}
+
 					$("#api",dom).val(JSON.stringify(data));
 					$('#contact').append(html.join(''));
 				},
@@ -516,7 +596,7 @@
 					}
 				})
 			});
-			$("#face",dom).click(uid,function(){
+			$("#face",dom).click(function(){
 				Blend.mbaas.face.verify(uid,{
 					onsuccess: function(data){
 						$("#api",dom).val(JSON.stringify(data));
@@ -528,7 +608,7 @@
 					}
 				})				
 			});
-			$("#blink",dom).click(uid,function(){
+			$("#blink",dom).click(function(){
 				Blend.mbaas.face.checkBlink(uid,{
 					onsuccess: function(data){
 						Tips.show(dom,{text:"眨眼了！"});
@@ -650,7 +730,7 @@
 					},
 					mediaType: 'all',
 					content: content,
-					linkUrl: 'http://clouda.com/blend/introduction/introduction',
+					linkUrl: 'http://blenddemo.duapp.com/index.html',
 					imageUrl: 'http://www.baidu.com/img/bdlogo.png'
 				});	
 			})		
@@ -666,7 +746,7 @@
 				}
 			});
 			var nonce = "asdfg";
-			var csrftoken = "asdfg0z3C9FN6LaQVB8uZGjHFCHdOFOp9IU1G";
+			var csrftoken = "19fdbdc498c1ff6ada08287a23c847a4";
 			var tag = 'test';
 			//var csrftoken = "e1d5e9b6927432d0d22346c9728a7285";
 			$("#unicast",dom).click(function(){
@@ -674,11 +754,28 @@
 					onsuccess: function(data){
 						$("#api",dom).val(JSON.stringify(data));
 						Tips.show(dom,{text:'注册单播成功'});
+						var params = {
+							"type":1,
+							"push_token":data.pushToken,
+/*							"tag"=>$tag,
+							"title"=>$title,
+							"content"=>$content,
+							"url"=>$url*/
+						};
+						$.post("/push.php",params,function(data){
+							if(data.result === 1){
+								Tips.show(dom,{text:'推送成功'});
+							}else{
+								Tips.show(dom,{text:'失败,请查看返回值'});
+							}
+							$("#api",dom).val(JSON.stringify(data));
+						},"json");
 					},
 					onfail: function(data){
 						$("#api",dom).val(JSON.stringify(data));
 						Tips.show(dom,{text:'注册单播失败'});
 					},
+					addShortcut:true,
 					nonce: nonce,
 					csrftoken: csrftoken
 				});
@@ -688,6 +785,21 @@
 					onsuccess: function(data){
 						$("#api",dom).val(JSON.stringify(data));
 						Tips.show(dom,{text:'注册多播成功'});
+						var params = {
+							"type":2,
+							"tag":data.tag
+/*							"title"=>$title,
+							"content"=>$content,
+							"url"=>$url*/
+						};
+						$.post("/push.php",params,function(data){
+							if(data.result === 1){
+								Tips.show(dom,{text:'推送成功'});
+							}else{
+								Tips.show(dom,{text:'失败,请查看返回值'});
+							}
+							$("#api",dom).val(JSON.stringify(data));
+						},"json");						
 					},
 					onfail: function(data){
 						$("#api",dom).val(JSON.stringify(data));
@@ -702,9 +814,11 @@
 				Blend.mbaas.push.unregisterUnicast({
 					onsuccess: function(data){
 						$("#api",dom).val(JSON.stringify(data));
+						Tips.show(dom,{text:'取消单播成功'});
 					},
-					onfail: function(){
+					onfail: function(data){
 						$("#api",dom).val(JSON.stringify(data));
+						Tips.show(dom,{text:'取消单播失败'});
 					},
 					nonce: nonce,
 					csrftoken: csrftoken
@@ -713,11 +827,13 @@
 			$("#unregisterMulticast",dom).click(function(){
 				Blend.mbaas.push.unregisterMulticast({
 					tag: 'blendDemo',
-					onsuccess: function(){
-
+					onsuccess: function(data){
+						$("#api",dom).val(JSON.stringify(data));
+						Tips.show(dom,{text:'取消多播成功'});
 					},
-					onfail: function(){
-						
+					onfail: function(data){
+						$("#api",dom).val(JSON.stringify(data));
+						Tips.show(dom,{text:'取消多播失败'});
 					},
 					nonce: nonce,
 					csrftoken: csrftoken,
@@ -743,50 +859,29 @@
                 id: "tab",
                 layers: [{
                     id: 'group1',
-                    url: 'samples/group1.html',
+                    url: '/samples/group1.html',
                     "active":true,
                     'autoload': true,
                     "pullToRefresh":true,
-                    "pullBgColor":"ff0000",
-                    "ptrFn":function(){
-                        console.log("refresh1 callback");
-                        setTimeout(function(){
-                            
-                            Blend.ui.layerStopRefresh();
-
-                        },800);
-                    }
+                    "pullBgColor":"ff0000"
                 }, {
                     id: 'group2',
-                    url: 'samples/group2.html',
-                        
+                    url: '/samples/group2.html',
                     'autoload': true
                 }, {
                     id: 'group3',
-                    url: 'samples/group3.html',
+                    url: '/samples/group3.html',
                     'autoload': true,
                     "pullToRefresh":true,
                     "pullText":"下拉刷新：）",
                     "loadingText":"更新中...",
-                    "releaseText":"释放更新^_^",
-                    "ptrFn":function(){
-                        console.log("refresh3 callback");
-                        setTimeout(function(){
-                            
-                            Blend.ui.layerStopRefresh();
-
-                        },500);
-                    }
-                    
-                
+                    "releaseText":"释放更新^_^"
                 }],
                 onshow: function(event) {
                     var id = event['detail'];
                     $(".buttons-row a").removeClass('active');
-                    $("#" + id).addClass('active');
-                    // $("#navStyle").removeClass().addClass("ls"+ $("#" + id).index())
+                    $("#" + id).addClass('active');                  
                 },
-                
                 left: 0,
                 top: 100
             });
@@ -796,18 +891,25 @@
                 tabs.active(this.id);
                 return false;
             });
-            // $("a.back",dom).on("click",function(){
-            //     Blend.ui.get("layergroup").out();
-            //     return false;
-            // });
             
-            // registerEvent(dom,Blend.ui.get("layergroup"));
         },
-        slider:function(dom){
-            // var blend = Blend.ui;
-            // var mylayer = Blend.ui.get("Slider");
-
-            
+        group1:function(dom){
+        	Blend.ui.on("layerPullDown",function(event){
+                setTimeout(function(){
+                    $("#rcmd",dom).prepend('<li><a href="#" class="item-link item-content"><div class="item-inner"><div class="item-title">测试下拉刷新</div></div></a></li>');
+                    Blend.ui.layerStopRefresh("group1");
+                },500);
+            });
+        },
+        group3:function(dom){
+        	Blend.ui.on("layerPullDown",function(event){
+                setTimeout(function(){
+                    $("#rcmd",dom).prepend('<li><a href="#" class="item-link item-content"><div class="item-inner"><div class="item-title">测试下拉刷新</div></div></a></li>');
+                    Blend.ui.layerStopRefresh('group3');
+                },500);
+            });
+        },
+        slider:function(dom){  
             var Slider = Blend.ui.Slider;
             var images = [],slider;
             $(".page-content img",dom).each(function(i, n) {
@@ -844,49 +946,38 @@
 
 })(this);
 
-//视图类
-+(function(win){
-	var View = function(selector){
-
-	}
-	win.View = View;
-	View.prototype = {
-		init:function(){
-
-		},
-		render:function(){
-
-		}
-	}
-})(this);
-
 //--------程序入口--------
 (function(){
 	
 	"use strict";
 
 	Blend.lightInit({
-	    ak:"rmFAlyKRUEplCj7F2GFTM9kM", //轻应用apikey，请参考《获取API Key》文档
+	    ak:"I58ECFzaGKYyy2LR3sHB2pis", //轻应用apikey，请参考《获取API Key》文档
 	    module:[]
 	});
 
 	document.addEventListener("blendready",function(){
+		var herfLayer = [];
 		Blend.ui.layerInit("0",function(dom){
-		    var herfLayer = [];
 		    $(".home_link",dom).on("click",function(e){
 		        e.preventDefault();
 		        var id = $(this).attr('data-id');
-		        if(herfLayer[id]){
-		            herfLayer[id].in();
-		        }else{
+		        // if(herfLayer[id]){
+		        //     herfLayer[id].in();
+		        // }else{
+		        	herfLayer[id] && herfLayer[id].destroy();
 		            herfLayer[id] = new Blend.ui.Layer({
 		                "id" : id,
 		                "url" : this.href,
-		                "active" :true
+		                "active" :true,
+		                "duration":200
 		            });
-		        }
+		        // }
 		    });
 		});
+		Blend.ui.on("layerPoped",function(event){
+			// Blend.ui.get(event.origin).destroy();
+		});		
 		var samples = new Sample();
 		for(var i in samples){
 			Blend.ui.layerInit(i,samples[i]);

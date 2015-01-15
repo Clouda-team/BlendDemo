@@ -42,8 +42,13 @@
 	float: left;
 }
 
-.h120{
-	height: 120px;
+textarea.h120{ 
+	height: 300px;
+	overflow-y:auto;
+}
+
+a.back{
+	display: none !important;
 }
 /* 布局类 */
 .appspan2{
@@ -65,7 +70,7 @@
 	width: 100%;
 	margin: auto;
 	-webkit-transition: all .7s ease;
-	overflow-x: hidden;
+	overflow: hidden;
 }
 
 .screen .center{
@@ -564,7 +569,7 @@ ul.contact{
 	font-size: 18px;
 	padding-left: 12px;
 	height: 100%;
-	overflow-y: scroll;
+	overflow-y: auto;
 }
 
 ul.contact li.split{
