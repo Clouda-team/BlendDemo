@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="Cache-Type" content="text/html;text/css;text/js;text/jpeg;text/jpg;text/gif;text/ttf;text/png" />
+    <meta name="viewport" content="width=device-width, user-scalable=no , initial-scale=1.0">
+    <title>Case Demo</title>
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.0/css/ionicons.min.css" />
+    <script src="http://zeptojs.com/zepto.min.js"></script>
+    <script name="baidu-tc-cerfication" type="text/javascript" charset="utf-8" src="http://apps.bdimg.com/blend/loader.js"></script>
+    <script>
+    Blend.lightInit({
+        ak:"8MAxI5o7VjKSZOKeBzS4XtxO",
+        module:["qr","blendui"]
+    });
+	</script>
+<style>
+*{
+  margin:0;
+  padding:0;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+body,html{
+    background:url(20121010163845624.jpg) #efefef;
+    height:100%;
+    width:100%;
+    overflow:hidden;
+    background-size:100% 100%;
+}
+
+.wrap{
+    height:100%;
+    width:100%;
+}
+
+.icontent{
+  padding-top:10px;
+  margin:0 auto;
+  text-align:center;
+}
+
+.bounce{
+  -webkit-animation:bounce 1s linear;
+}
+
+
+@-webkit-keyframes loading
+{
+  0%   {-webkit-transform:rotate(0);}
+  100% {-webkit-transform:rotate(360deg);}
+}
+
+@-webkit-keyframes bounce
+{
+  0%, 20%, 50%, 80%, 100% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+
+  40% {
+    -webkit-transform: translateY(-30px);
+    transform: translateY(-30px);
+  }
+
+  60% {
+    -webkit-transform: translateY(-15px);
+    transform: translateY(-15px);
+  }
+}
+.bg_ipt{
+  display:block;
+  margin:0 20px;
+  height: 35px;
+  overflow:hidden;
+  position:relative;
+}
+.s_ipt{
+  display:block;
+  width:100%;
+  height: 100%;
+  font: 16px/23px arial;
+  background: #fff;
+  outline: 0;
+  border:none;
+  border-radius: 0;
+  -webkit-appearance: none
+}
+#Camera{
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: block;
+  width: 50px;
+  height: 35px;
+  font-size: 32px;
+  color: #3F7DA0;
+  background: #E4E4E4;
+}
+.device{
+  margin-top: 10px;
+  overflow:hidden;
+}
+.device>span{
+  height:60px;
+  display:inline-block;
+  width:100px;
+  color:#fff;
+  overflow:hidden;
+}
+.icon>i{
+  display:block;
+  font-size: 30px;
+}
+.ihostory{
+  margin-top:7px;
+}
+.navs{
+  position:relative;
+}
+.nav{
+  background: #fff;
+  height: 39px;
+  border-bottom:#dadada 1px solid;
+  display: box;
+  display: -webkit-box;
+}
+.nav>span{
+    display:block;
+    -webkit-box-flex: 1;
+    position: relative;
+    font-size: 16px;
+    color:#575757;
+    text-align: center;
+    line-height: 38px;
+}
+.nav>span.on{
+  color:#45C01A;
+}
+.sq-lv {
+    position: absolute;
+    width: 50%;
+    height: 3px;
+    bottom: 1px;
+    z-index:3;
+    //-webkit-transition:.05s linear -webkit-transform;
+}
+.sq-lv>b{
+    display: block;
+    width: 100%;
+    height: 4px;
+    margin: 0 auto;
+    background:#45C01A;
+}
+.sq-lv.lv0 {
+    -webkit-transform: translate(0, 0);
+}
+.sq-lv.lv1 {
+    -webkit-transform: translate(100%, 0);
+}
+.ihost{
+  position:absolute;
+  bottom:0;
+  background:#fff;
+  top:177px;
+  left:0;
+  right:0;
+  z-index: 1000;
+}
+#kn{
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: #E4E4E4;
+  font-size: 12px;
+  height: 100%;
+  line-height: 3;
+  width: 50px;
+  color: #666;
+  display:none;
+}
+/*#kw1:focus~span{
+  display:block;
+}*/
+#layermenu{
+  position: absolute;
+  left: 16px;
+  top: 10px;
+  background: rgba(255,255,255,.4);
+  padding: 5px;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.3);
+  font-size: 12px;
+  border-radius: 2px;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+   
+   <span id="layermenu">菜单</span>
+   <div class="icontent">
+        <p>
+          <img src="clouda+.png" height="50" alt="logo">
+        </p>
+        <div id="fm" style="padding-top:3px;padding-bottom:30px;">
+          <div class="bg_ipt">
+              <span style="display:block;height:100%;padding-right:50px">
+                  <input type="text" name="wd" id="kw1" maxlength="100" class="s_ipt" required="required" placeHolder="输入URL或者扫码获取" />
+              </span>
+              <span id="kn">前往</span>
+              <span id="Camera" class="ion-camera"></span>
+          </div>
+        </div>
+   </div>
+
+   <div class="ihostory">
+      <div class="navs">
+          <nav class="nav" id="SQNav">
+            <span id="Tab1" class="on">Tab1</span>
+            <span id="Tab2">Tab2</span>
+          </nav>
+          <div id="SQNavStyle" class="sq-lv"><b></b></div>
+      </div>
+   </div>
+   <div class="ihost">
+     
+   </div>
+</div>
+<script>
+document.addEventListener("blendready",function(){
+    var main = Blend.ui;
+    var LayerGroup = main.LayerGroup;
+    var tabs = new LayerGroup({
+        id: "Tabs",
+        layers: [{
+            id: 'Tab1',
+            url: 'tab1.html?t=' + (new Date()),
+            autoload:true
+        }, {
+            id: 'Tab2',
+            url: 'tab2.html?t=' + (new Date()),
+            autoload:true
+        }],
+        onselected: function(event) {
+            var id = event['layerId'];
+            $("#SQNav span").removeClass('on');
+            $("#" + id).addClass('on');
+            $("#SQNavStyle").removeClass().addClass("sq-lv lv" + $("#" + id).index());
+        },
+        left: 0,
+        top: 177
+    });
+    
+    
+    //点击切换
+    $("#SQNav span").on("click",function(e) {
+        e.preventDefault();
+        tabs.active(this.id);
+    });
+    
+    // 侧边栏菜单
+    main.Layer.addSidebar({
+        url:'menu.html'
+    });
+    $("#layermenu").on('click',function(e){
+        e.preventDefault();
+        main.Layer.showSidebar();
+    });
+    
+
+    $("#Camera").bind("touchend",function(e){
+       clouda.device.qr.startCapture({
+           onsuccess:function(code){
+                if(/^http:\/\//.test(code)){
+                    store(code);
+                    location.href=code;
+                }else{
+                    alert("地址错误")
+                }
+            },
+            onfail:function(e){
+                console.log(e);
+            },
+            type:clouda.device.qr.QRCODE
+        });
+    });
+
+    main.on("openUrl",function(e){
+        openUrl(e.data.url);
+    });
+    
+    //layer
+    var blendLayer = Blend.ui.Layer;
+    var layerArray = [];
+    var layerObject = {};
+    var layerPush = function(url,layer){
+        var len = layerArray.length;
+        if(len>=3){
+            layerObject[layerArray[0]].destroy();
+            delete layerObject[layerArray[0]];
+            layerArray.shift();
+        }
+        layerArray.push(url);
+        layerObject[url] = layer;
+    }
+    
+    //创建layer
+    var createLayer = function(url){
+        if(!url) return false;
+        if(layerObject[url]){
+            layerObject[url].in();
+            return;
+        }
+        var contentLayer = new blendLayer({
+            'id':''+(+ new Date()),
+            "url":url,
+            "active":true
+        });
+        layerPush(url,contentLayer);
+        return contentLayer;
+    };
+    
+    var openUrl = function(url){
+        try{
+          createLayer(url);
+        }catch(e){
+          location.href=url;
+        }
+    }
+    
+    //历史记录存储
+    var store = function( url ){
+        var storage = window.localStorage;
+        var _historys = storage['blendHisttory']
+        var historys = _historys?JSON.parse(_historys):[];
+        var newItem = [
+          {
+            url: url,
+            title: "",
+            time:1*new Date()
+          }
+        ]
+        historys = newItem.concat(historys);
+        storage['blendHisttory'] = JSON.stringify(historys);
+        main.fire("onstore","Tab1");
+    }
+
+    $("#kw1").focus(function(e){
+      $("#Camera").hide();
+      $("#kn").show();
+    }).blur(function(e){
+      setTimeout(function(e){
+        $("#Camera").show();
+        $("#kn").hide();
+      },500)
+    });
+    
+    $("#kn").click(function(e){
+        var url = $("#kw1").val().trim();
+        if(!url){
+           alert("请输入url");
+           return;
+        }
+        url = /^http:\/\//.test(url)? url:"http://"+url;
+        store(url);
+        openUrl(url);
+    });
+
+});
+</script>
+</body>
+</html>

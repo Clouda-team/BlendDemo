@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="Cache-Type" content="text/html;text/css;text/js;text/jpeg;text/jpg;text/gif" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+    <title></title>
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.0/css/ionicons.min.css" />
+    <script src="http://zeptojs.com/zepto.min.js"></script>
+    <script name="baidu-tc-cerfication" type="text/javascript" charset="utf-8" src="http://apps.bdimg.com/blend/loader.js"></script>
+    <script>
+    Blend.lightInit({
+        ak:"8MAxI5o7VjKSZOKeBzS4XtxO",
+        module:["qr","blendui"]
+    });
+	</script>
+</head>
+<style>
+*{
+  margin:0;
+  padding:0;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.sq-infos{
+  width:100%;
+  overflow:hidden;
+}
+.sq-info{
+  padding:10px;
+  border-bottom: 1px #e3e3e3 solid;
+  display: box;
+  display: -webkit-box;
+}
+.sq-info:active{
+  background:#efefef;
+}
+.sq-info:hover,.sq-info.hovering{
+  background:#efefef;
+}
+.sq-info>span{
+  display:block;
+}
+.sq-img{
+  width:48px;
+  height:48px;
+  background:#efefef;
+  margin-right:10px;
+  text-align: center;
+}
+.sq-img>i{
+  font-size:40px;
+  color:#CB4042;
+}
+.sq-tip>h4{
+  font-size: 14px;
+  margin:4px 0  5px 0;
+}
+.sq-tip>em{
+  font-size: 13px;
+  color:#999;
+}
+</style>
+<body>
+<div class="sq-infos" id="Infos">
+
+</div>
+
+<script>
+document.addEventListener("blendready",function(){
+  var main = Blend.ui;
+  var $infos = $("#Infos");
+  var getStore = function( ){
+      var storage = window.localStorage;
+      var _historys = storage['blendHisttory'];
+      console.log(_historys);
+      var historys = _historys?JSON.parse(_historys):[];
+      return historys;
+  }
+  var render = function(){
+      var historys = getStore();
+      if(historys.length){
+          historys.forEach(function(n,i){
+              $('<div class="sq-info sq-hover" data-url="'+ n.url +'""><span class="sq-tip"><em>'+n.url+'</em></span></div>').appendTo($infos);
+          });
+      }else{
+        $("<h3 style='font-style: italic;font-weight: 500;font-size: 14px;'>无历史记录</h3>").appendTo($infos);
+      }
+  };
+  render();
+  $("#Infos").delegate(".sq-info","click", function(e){
+      main.fire("openUrl","top",{
+        url: $(this).data('url')
+      });
+  });
+  main.on("onstore",render);
+});
+</script>
+</body>
+</html>
